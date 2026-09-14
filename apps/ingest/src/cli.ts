@@ -11,6 +11,7 @@ import { loadEnv } from './env';
 import { offersCommand } from './commands/offers';
 import { fridaCommand } from './commands/frida';
 import { sourcesCommand } from './commands/sources';
+import { dealersCommand } from './commands/dealers';
 
 loadEnv();
 
@@ -36,7 +37,8 @@ program
   .option('--json', 'machine-readable output')
   .option('--dealer <id>', 'restrict to dealer id (repeatable)', collect)
   .option('--zip <zip>', 'Salling food waste: zip code (repeatable)', collect)
-  .action(async (o: { source: SourceId; fixtures?: boolean; live?: boolean; dryRun?: boolean; json?: boolean; dealer?: string[]; zip?: string[] }) => {
+  .option('--out <file>', 'write a JSON snapshot of the normalised offers (e.g. data/offers/latest.json)')
+  .action(async (o: { source: SourceId; fixtures?: boolean; live?: boolean; dryRun?: boolean; json?: boolean; dealer?: string[]; zip?: string[]; out?: string }) => {
     if (o.live && o.fixtures) throw new InvalidArgumentError('--live and --fixtures are mutually exclusive');
     await offersCommand({
       source: o.source,
@@ -45,7 +47,17 @@ program
       json: Boolean(o.json),
       ...(o.dealer ? { dealerIds: o.dealer } : {}),
       ...(o.zip ? { zips: o.zip } : {}),
+      ...(o.out ? { out: o.out } : {}),
     });
+  });
+
+program
+  .command('dealers')
+  .description('List Tjek dealers (id + name) to map them to our retailers')
+  .option('--live', 'call the real API — refused unless tjek is approved')
+  .option('--json')
+  .action(async (o: { live?: boolean; json?: boolean }) => {
+    await dealersCommand({ mode: o.live ? 'live' : 'fixtures', json: Boolean(o.json) });
   });
 
 program

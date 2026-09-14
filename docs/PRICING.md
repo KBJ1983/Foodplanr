@@ -55,8 +55,10 @@ Motor og UI er klar. Det der mangler, er data med ret til brug:
    mængde som input. Match under 0,7 i konfidens går til admin-køen og bruges ikke i priser.
 4. **Normalpris-baseline** (fase 1): `price_history` pr. råvare/kæde (median over 8 uger) erstatter de manuelle
    estimater i `ingredient.default_price_per_unit`. Rabat-% = 1 − tilbud/baseline.
-5. **Web-appen** skifter fra `lib/offers.ts` (fixtures) til at læse `offer` for den valgte uge. `PriceSource`
-   viser automatisk kildenavn og periode når status er `approved`.
+5. **Web-appen** læser tilbud via `/api/offers` (`apps/web/lib/offers-source.ts`): findes et ingest-snapshot
+   (`pnpm ingest --source=tjek --live --dry-run --out data/offers/latest.json`), bruges det, med forhandler-mapping
+   (`lib/dealers.ts`) og alias-match (`lib/aliases.ts`, pass 2); ellers fixtures. `PriceSource` viser kildenavn,
+   hentetidspunkt og match-rate. Med database læses `offer`-tabellen samme sted. Runbook: `docs/legal/tjek.md`.
 6. **Salling madspild** (fase 2, efter Terms-review) kommer ind som `offer.kind = food_waste` med kort TTL og
    vises som en egen linjetype ("Madspild · Netto Aarhus C · udløber i dag").
 

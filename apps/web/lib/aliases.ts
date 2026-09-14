@@ -1,0 +1,75 @@
+/**
+ * Alias table (pass 2) for the prototype ontology in lib/ingredients.ts.
+ * Ordered: specific before general. Phase 1 moves this to the `ingredient.aliases`
+ * column with admin editing; the matcher itself lives in @madplan/domain.
+ */
+import { rule, type AliasRule } from '@madplan/domain';
+
+export const ALIAS_RULES: AliasRule[] = [
+  // meat & fish
+  rule('kyllingelaar', ['kyllingelår', 'kyllinge lår', 'kyllingeunderlår', 'kyllingeoverlår']),
+  rule('kyllingebryst', ['kyllingebryst', 'kyllingefilet', 'kyllingeinderfilet', 'kyllingebrystfilet']),
+  rule('hakket-kalv-flaesk', ['hakket kalv og flæsk', 'hakket kalv & flæsk', 'kalv og flæsk', 'kalv & flæsk', 'hakket kalv/flæsk']),
+  rule('hakket-oksekoed', ['hakket oksekød', 'hakket okse', 'oksekød hakket', 'hakkebøf', 'hakket oksefars']),
+  rule('torskefilet', ['torskefilet', 'torsk', 'torskeloins']),
+  rule('laksefilet', ['laksefilet', 'laks', 'lakseportion']),
+  rule('fiskefars', ['fiskefars', 'fiskefrikadeller']),
+  rule('bacon', ['bacon']),
+  // pulses, grains, canned
+  rule('roede-linser', ['røde linser', 'linser']),
+  rule('kikaerter', ['kikærter']),
+  rule('kidneyboenner', ['kidneybønner', 'kidney bønner', 'chilibønner', 'bønner i chili']),
+  rule('hakkede-tomater', ['hakkede tomater', 'flåede tomater', 'tomater hakkede']),
+  rule('tomatpure', ['tomatpuré', 'tomatpure', 'tomatkoncentrat']),
+  rule('fuldkornspasta', ['fuldkornspasta', 'fuldkorns pasta', 'fuldkornsspaghetti']),
+  rule('pasta', ['pasta', 'spaghetti', 'penne', 'fusilli', 'tagliatelle', 'farfalle'], { exclude: ['fuldkorn', 'salat'] }),
+  rule('risottoris', ['risottoris', 'risotto', 'arborio']),
+  rule('ris', ['ris', 'jasminris', 'basmati', 'grødris', 'løse ris'], { exclude: ['risotto', 'chips', 'kiks', 'riskiks', 'risengrød'] }),
+  rule('nudler', ['nudler', 'æggenudler', 'noodles']),
+  rule('hvedemel', ['hvedemel', 'mel'], { exclude: ['mandelmel', 'rugmel', 'fuldkorn'] }),
+  rule('gaer', ['gær']),
+  rule('rugbroed', ['rugbrød']),
+  rule('tortillas', ['tortilla', 'tortillas']),
+  rule('wraps', ['wraps', 'wrap']),
+  rule('burgerboller', ['burgerboller', 'briocheboller', 'hamburgerryg boller']),
+  rule('taertedej', ['tærtedej', 'tærtebunde', 'butterdej']),
+  rule('falafel', ['falafel']),
+  rule('hummus', ['hummus', 'humus']),
+  // vegetables
+  rule('bagekartofler', ['bagekartofler', 'bagekartoffel']),
+  rule('kartofler', ['kartofler', 'kartoffel'], { exclude: ['bage', 'chips', 'pommes', 'salat', 'mos']}),
+  rule('guleroedder', ['gulerødder', 'gulerod', 'snackgulerødder']),
+  rule('rodfrugter', ['rodfrugter', 'rodfrugtmix', 'rodfrugt']),
+  rule('hvidloeg', ['hvidløg']),
+  rule('loeg', ['løg', 'zittauerløg', 'rødløg', 'skalotteløg'], { exclude: ['hvidløg', 'forårsløg', 'porre'] }),
+  rule('groenkaal', ['grønkål']),
+  rule('spinat', ['spinat', 'babyspinat']),
+  rule('svampe', ['champignon', 'svampe', 'markchampignon', 'portobello']),
+  rule('peberfrugt', ['peberfrugt', 'peberfrugter', 'snackpeber']),
+  rule('squash', ['squash', 'zucchini']),
+  rule('broccoli', ['broccoli']),
+  rule('wok-groent', ['wokgrønt', 'wok grønt', 'wokmix', 'wok mix', 'asiatisk grøntsagsmix']),
+  rule('majs', ['majs', 'majskorn'], { exclude: ['popcorn', 'chips'] }),
+  rule('agurk', ['agurk', 'agurker']),
+  rule('tomater', ['tomater', 'tomat', 'cherrytomater', 'blommetomater'], { exclude: ['hakkede', 'flåede', 'puré', 'pure', 'soltørrede', 'ketchup'] }),
+  rule('salat', ['hjertesalat', 'icebergsalat', 'salathoved', 'hovedsalat', 'romaine', 'salat'], { exclude: ['pasta', 'kartoffel', 'dressing', 'tun'] }),
+  rule('citron', ['citron', 'citroner']),
+  rule('aebler', ['æbler', 'æble']),
+  rule('persille', ['persille']),
+  rule('dild', ['dild']),
+  // dairy & eggs
+  rule('mozzarella', ['mozzarella']),
+  rule('feta', ['feta', 'salatost', 'salattern']),
+  rule('ost-revet', ['revet ost', 'reven ost', 'ost revet', 'pizzatopping', 'cheddar', 'skæreost', 'ost'], { exclude: ['mozzarella', 'feta', 'flødeost', 'smøreost', 'salatost'] }),
+  rule('creme-fraiche', ['creme fraiche', 'cremefraiche', 'crème fraîche']),
+  rule('floede', ['piskefløde', 'fløde', 'madlavningsfløde'], { exclude: ['flødeost', 'flødeis', 'is'] }),
+  rule('maelk', ['sødmælk', 'letmælk', 'minimælk', 'skummetmælk', 'mælk'], { exclude: ['kokosmælk', 'havremælk', 'kærnemælk', 'chokolademælk'] }),
+  rule('aeg', ['æg'], { exclude: ['æggenudler', 'ægge'] }),
+  rule('smoer', ['smør', 'lurpak', 'kærgården'], { exclude: ['smørbar', 'smørebar', 'peanut'] }),
+  // pantry
+  rule('kokosmaelk', ['kokosmælk']),
+  rule('karrypasta', ['karrypasta', 'karry paste', 'curry paste', 'karry']),
+  rule('sennep', ['sennep']),
+  rule('remoulade', ['remoulade']),
+  rule('hasselnoedder', ['hasselnødder', 'hasselnøddekerner']),
+];

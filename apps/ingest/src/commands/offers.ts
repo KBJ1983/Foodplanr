@@ -1,3 +1,5 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
 import { runOfferIngest, type IngestResult } from '@madplan/adapters';
 import {
   DrizzleOfferRepository,
@@ -16,6 +18,8 @@ export interface OffersCommandOptions {
   json: boolean;
   dealerIds?: string[];
   zips?: string[];
+  /** Write a snapshot (whitelisted, normalised offers only) for the web app to read while no DB exists. */
+  out?: string;
 }
 
 function printSummary(result: IngestResult, persisted: { inserted: number; updated: number; retailersCreated: string[] } | null, dryRun: boolean) {
@@ -59,6 +63,14 @@ export async function offersCommand(opts: OffersCommandOptions): Promise<void> {
 
   let persisted: Awaited<ReturnType<OfferRepository['upsertOffers']>> | null = null;
   let close: (() => Promise<void>) | null = null;
+
+  if (opts.out) {
+    const file = resolve(process.env.INIT_CWD ?? process.cwd(), opts.out);
+    await mkdir(dirname(file), { recursive: true });
+    const snapshot = { source: opts.source, mode: opts.mode, fetchedAt: new Date().toISOString(), stats: result.stats, offers: result.offers };
+    await writeFile(file, JSON.stringify(snapshot, null, 2), 'utf8');
+    if (!opts.json) console.log(`snapshot written: ${file} (${result.offers.length} offers, whitelisted fields only)`);
+  }
 
   if (!opts.dryRun) {
     if (sec.databaseUrl) {

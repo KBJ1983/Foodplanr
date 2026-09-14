@@ -9,5 +9,6 @@ next-env.d.ts
 *.log
 .turbo/
 coverage/
-# Third-party datasets are downloaded locally, never committed (see docs/legal/frida.md)
-data/raw/
+# Third-party data lives locally only, never in the (public) repo:
+# datasets (docs/legal/frida.md) and offer snapshots from `pnpm ingest --out`.
+data/

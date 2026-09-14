@@ -3,12 +3,18 @@
 import { useMemo } from 'react';
 import { priceStrategies, type PricingInput, type Strategy, type StrategyResult, type Swaps } from './engine';
 import type { MealPlan } from './mock-data';
-import { fixtureOffers, type MatchedOffer } from './offers';
+import type { MatchedOffer } from './offers';
+import { useOffersContext } from './offers-context';
+import type { OffersMeta } from './offers-source';
 import { persons, swapKey, useStore } from './store';
 
-/** Offers are fixtures dated relative to today; memoised once per session. */
+/** Offers for the session: snapshot from /api/offers when present, else fixtures. */
 export function useOffers(): MatchedOffer[] {
-  return useMemo(() => fixtureOffers(), []);
+  return useOffersContext().offers;
+}
+
+export function useOffersMeta(): OffersMeta {
+  return useOffersContext().meta;
 }
 
 export interface Pricing {

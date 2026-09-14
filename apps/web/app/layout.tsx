@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { OffersProvider } from '@/lib/offers-context';
 import { StoreProvider } from '@/lib/store';
 import './globals.css';
 
@@ -30,7 +31,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="da" className={manrope.variable}>
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <OffersProvider>{children}</OffersProvider>
+        </StoreProvider>
       </body>
     </html>
   );

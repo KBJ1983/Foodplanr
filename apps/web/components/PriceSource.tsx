@@ -1,19 +1,22 @@
-import { getSource } from '@madplan/legal';
+'use client';
+
+import { useOffersMeta } from '@/lib/use-pricing';
 import { isoWeekNumber, weekRangeLabel } from '@/lib/week';
 
 /**
- * Where the prices come from. Offers: today our own fixtures in the pipeline's
- * format (Tjek is `pending` in the rights registry, so no real offers). Normal
- * prices: our estimates until price_history exists. When Tjek is approved this
- * line names the source and the offer period, as the agreement will require.
+ * Where the prices come from — read from the offers provenance so the line is
+ * always true: fixtures today; source name, fetch time and match rate once a
+ * live snapshot exists. Normal prices are our estimates until price_history.
  */
 export function PriceSource({ weekStart, compact = false }: { weekStart: string; compact?: boolean }) {
-  const tjek = getSource('tjek');
-  const live = tjek.legal_status === 'approved';
+  const meta = useOffersMeta();
+  const when = meta.fetchedAt ? new Date(meta.fetchedAt).toLocaleString('da-DK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : null;
   return (
     <p className="s" style={{ fontSize: compact ? 10 : 11, opacity: 0.6, margin: 0 }}>
-      Tilbud: {live ? `${tjek.display_name}` : 'egne testdata i tilbudsavis-format (ingen rigtige tilbud endnu)'}, gyldige uge {isoWeekNumber(weekStart)} (
-      {weekRangeLabel(weekStart)}). Normalpriser: egne estimater. {live ? '' : 'Rigtige tilbud kræver aftale med kilderne (Tjek, Salling), status: afventer.'}
+      Tilbud: {meta.sourceLabel}
+      {when ? `, hentet ${when}` : ''}, gyldige uge {isoWeekNumber(weekStart)} ({weekRangeLabel(weekStart)}).
+      {meta.kind === 'snapshot' ? ` ${meta.matched} af ${meta.total} tilbud matchet til råvarer.` : ''} Normalpriser: egne estimater.
+      {meta.legalStatus !== 'approved' ? ' Rigtige tilbud kræver aftale med kilderne (Tjek, Salling), status: afventer.' : ''}
     </p>
   );
 }
