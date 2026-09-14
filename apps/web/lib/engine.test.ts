@@ -99,6 +99,41 @@ describe('strategies', () => {
   });
 });
 
+describe('line overrides (flyt / udsolgt)', () => {
+  it('moving a line re-prices it in the new store and marks where it came from', async () => {
+    const { applyLineOverrides, storeOptions } = await import('./engine');
+    const base = priceStrategies(input).preferred;
+    const chicken = base.groups.flatMap((g) => g.lines).find((l) => l.ingredientId === 'kyllingelaar')!;
+    expect(chicken.store).toBe('rema'); // Rema has the valid offer
+    const moved = applyLineOverrides(base, { kyllingelaar: { store: 'lidl' } }, offers, weekStart);
+    const line = moved.groups.flatMap((g) => g.lines).find((l) => l.ingredientId === 'kyllingelaar')!;
+    expect(line.store).toBe('lidl');
+    expect(line.movedFrom).toBe('rema');
+    expect(line.kind).toBe('baseline');
+    expect(moved.total).toBeGreaterThan(base.total);
+    expect(moved.lineCount).toBe(base.lineCount);
+    const opts = storeOptions(chicken, offers, weekStart);
+    expect(opts.map((o) => o.store).sort()).toEqual(['365', 'bilka', 'brugsen', 'foetex', 'lidl', 'meny', 'netto', 'rema'].sort());
+    expect(opts.find((o) => o.store === 'rema')!.kind).toBe('offer');
+  });
+
+  it('sold-out lines leave groups and totals but are kept for restoring', async () => {
+    const { applyLineOverrides } = await import('./engine');
+    const base = priceStrategies(input).preferred;
+    const r = applyLineOverrides(base, { kyllingelaar: { soldOut: true } }, offers, weekStart);
+    expect(r.soldOut.map((l) => l.ingredientId)).toEqual(['kyllingelaar']);
+    expect(r.lineCount).toBe(base.lineCount - 1);
+    expect(r.total).toBeCloseTo(base.total - 39, 2);
+    expect(r.groups.flatMap((g) => g.lines).some((l) => l.ingredientId === 'kyllingelaar')).toBe(false);
+  });
+
+  it('no overrides → same result object', async () => {
+    const { applyLineOverrides } = await import('./engine');
+    const base = priceStrategies(input).cheapest;
+    expect(applyLineOverrides(base, {}, offers, weekStart)).toBe(base);
+  });
+});
+
 describe('swaps', () => {
   it('swapping a day changes the week price and the needs', () => {
     const delta = swapDelta(input, 0, 'ovnbagt-laks'); // salmon instead of chicken thighs

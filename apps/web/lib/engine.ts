@@ -54,7 +54,16 @@ export interface LineCost {
     runFrom: string;
     runTill: string;
   };
+  /** Set when the user moved the line away from the store the strategy chose. */
+  movedFrom?: StoreId;
 }
+
+/** Per-line user decisions on the shopping list ("flyt til butik", "udsolgt"). */
+export interface LineOverride {
+  store?: StoreId;
+  soldOut?: boolean;
+}
+export type LineOverrides = Record<string, LineOverride>;
 
 export interface StoreGroup {
   store: StoreId;
@@ -73,6 +82,8 @@ export interface StrategyResult {
   saved: number;
   offerLines: number;
   lineCount: number;
+  /** Lines the user marked sold out (not in groups or totals). */
+  soldOut: LineCost[];
 }
 
 // --- recipes & needs ---------------------------------------------------------
@@ -171,7 +182,42 @@ function group(lines: LineCost[], strategy: Strategy): StrategyResult {
   const groups = [...byStore.values()].sort((a, b) => b.total - a.total);
   const total = round2(groups.reduce((a, g) => a + g.total, 0));
   const baselineTotal = round2(lines.reduce((a, l) => a + l.baselinePrice, 0));
-  return { strategy, groups, total, baselineTotal, saved: round2(baselineTotal - total), offerLines: lines.filter((l) => l.kind === 'offer').length, lineCount: lines.length };
+  return { strategy, groups, total, baselineTotal, saved: round2(baselineTotal - total), offerLines: lines.filter((l) => l.kind === 'offer').length, lineCount: lines.length, soldOut: [] };
+}
+
+const needOf = (l: LineCost): Need => ({ ingredientId: l.ingredientId, name: l.name, qty: l.qty, unit: l.unit });
+
+/** Price of one line in every store (for the "flyt til" picker). */
+export function storeOptions(line: LineCost, offers: readonly MatchedOffer[], weekStart: string): LineCost[] {
+  return STORES.map((s) => costAtStore(needOf(line), s.id, offers, weekStart));
+}
+
+/**
+ * Apply the user's per-line decisions to a strategy result: moved lines are
+ * re-priced in the chosen store (offers there count), sold-out lines leave the
+ * groups and totals but are kept in `soldOut` so they can be moved or restored.
+ */
+export function applyLineOverrides(result: StrategyResult, overrides: LineOverrides, offers: readonly MatchedOffer[], weekStart: string): StrategyResult {
+  if (Object.keys(overrides).length === 0) return result;
+  const kept: LineCost[] = [];
+  const soldOut: LineCost[] = [];
+  for (const l of result.groups.flatMap((g) => g.lines)) {
+    const o = overrides[l.ingredientId];
+    if (!o) {
+      kept.push(l);
+      continue;
+    }
+    if (o.soldOut) {
+      soldOut.push(l);
+      continue;
+    }
+    if (o.store && o.store !== l.store) {
+      kept.push({ ...costAtStore(needOf(l), o.store, offers, weekStart), movedFrom: l.store });
+    } else {
+      kept.push(l);
+    }
+  }
+  return { ...group(kept, result.strategy), soldOut };
 }
 
 export interface PricingInput {

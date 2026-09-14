@@ -5,7 +5,7 @@
  * localStorage. Replaced by server state + auth in phase 1.
  */
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import type { Strategy, Swaps } from './engine';
+import type { LineOverride, LineOverrides, Strategy, Swaps } from './engine';
 import type { StoreId } from './mock-data';
 import { mondayOf } from './week';
 
@@ -28,6 +28,8 @@ export interface AppState {
   saved: SavedPlan[];
   /** "Byt ret": `${planId}|${weekStart}` → day index → recipe id. */
   swaps: Record<string, Swaps>;
+  /** Shopping-list decisions: `${planId}|${weekStart}` → ingredient id → {store?, soldOut?}. */
+  lineOverrides: Record<string, LineOverrides>;
   strategy: Strategy;
   /** `${planId}|${ingredientId}` for checked lines. */
   checked: string[];
@@ -49,6 +51,7 @@ export const DEFAULT_STATE: AppState = {
   weekStart: null,
   saved: [],
   swaps: {},
+  lineOverrides: {},
   strategy: 'cheapest',
   checked: [],
   onboarded: false,
@@ -74,6 +77,9 @@ interface Ctx {
   /** Swap the dish on a day (null = back to the plan's own dish). */
   setSwap: (planId: string, weekStart: string, dayIndex: number, recipeId: string | null) => void;
   clearSwaps: (planId: string, weekStart: string) => void;
+  /** Move a list line to another store or mark it sold out (null = back to the strategy's choice). */
+  setLineOverride: (planId: string, weekStart: string, ingredientId: string, override: LineOverride | null) => void;
+  clearLineOverrides: (planId: string, weekStart: string) => void;
   reset: () => void;
 }
 
@@ -139,6 +145,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           const next = { ...s.swaps };
           delete next[swapKey(planId, ws)];
           return { ...s, swaps: next };
+        }),
+      setLineOverride: (planId, ws, ingredientId, override) =>
+        setState((s) => {
+          const key = swapKey(planId, ws);
+          const cur = { ...(s.lineOverrides[key] ?? {}) };
+          if (override === null) delete cur[ingredientId];
+          else cur[ingredientId] = override;
+          return { ...s, lineOverrides: { ...s.lineOverrides, [key]: cur } };
+        }),
+      clearLineOverrides: (planId, ws) =>
+        setState((s) => {
+          const next = { ...s.lineOverrides };
+          delete next[swapKey(planId, ws)];
+          return { ...s, lineOverrides: next };
         }),
       reset: () => setState(DEFAULT_STATE),
     };

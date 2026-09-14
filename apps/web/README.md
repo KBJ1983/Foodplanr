@@ -34,6 +34,11 @@ shopping list shows ("Tilbud … gyldig 14.–20. sep." vs "Normalpris, estimat"
 Days unfold into the recipe (`RecipeCard`) and can be swapped (`SwapPicker`, price delta per alternative);
 swaps live in state per plan + week.
 
+On the shopping list every line has "flyt · udsolgt": move it to another store (priced there, offers
+marked ★) or mark it sold out, which parks it in an "Udsolgt" section at the bottom with "Flyt til …" /
+"Tilbage". Decisions live in state per plan + week (`lineOverrides`) and are applied by
+`applyLineOverrides` in the engine, so totals, counters and the copied list follow.
+
 ## What is real and what is example data
 
 - **Week and price source:** every plan/strategy/list screen states the ISO week being planned
