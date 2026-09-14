@@ -211,6 +211,9 @@ importers:
       '@madplan/checkout':
         specifier: workspace:*
         version: link:../../packages/checkout
+      '@madplan/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@madplan/legal':
         specifier: workspace:*
         version: link:../../packages/legal

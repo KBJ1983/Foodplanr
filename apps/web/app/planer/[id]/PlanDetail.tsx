@@ -7,27 +7,37 @@ import { Attribution } from '@/components/Attribution';
 import { Nav } from '@/components/Nav';
 import { Placeholder } from '@/components/PlanCard';
 import { PriceSource } from '@/components/PriceSource';
+import { RecipeCard } from '@/components/RecipeCard';
 import { Screen, ToneBox } from '@/components/Screen';
 import { StrategyPanel } from '@/components/StrategyPanel';
+import { SwapPicker } from '@/components/SwapPicker';
 import { WeekPicker } from '@/components/WeekPicker';
+import { dinnerCost, planDinnerKcal, recipesForPlan } from '@/lib/engine';
 import { kr, n } from '@/lib/format';
-import type { MealPlan } from '@/lib/mock-data';
-import { FREE_TIER, persons, useStore } from '@/lib/store';
-import { planPrice } from '@/lib/strategy';
+import { DAY_NAMES, type MealPlan } from '@/lib/mock-data';
+import { FREE_TIER, useStore } from '@/lib/store';
+import { usePricing } from '@/lib/use-pricing';
 import { isoWeekNumber, weekLabel } from '@/lib/week';
 
 /**
- * Week detail. Mobile: full-width photo block, white panel pulled 30px up with
- * 24px radius, week label, title, three key numbers, day list, magenta CTA.
- * Desktop: 7-day grid left, blue strategy panel right.
+ * Week detail. Each day unfolds into its recipe (scaled to the household) and
+ * can be swapped for another dish; prices follow. Mobile: photo block, white
+ * panel pulled up, day list. Desktop: 7-day grid left, blue strategy panel right.
  */
 export function PlanDetail({ plan }: { plan: MealPlan }) {
-  const { state, update, weekStart, toggleSaved, isSaved } = useStore();
+  const { state, update, weekStart, toggleSaved, isSaved, setSwap, clearSwaps } = useStore();
+  const { input, results, swaps } = usePricing(plan);
   const search = useSearchParams();
-  const price = planPrice(plan, state.stores);
-  const pers = persons(state);
+  const price = results.preferred.total;
   const saved = isSaved(plan.id, weekStart);
   const [limitHit, setLimitHit] = useState(false);
+  // `?dag=0..6` opens a day directly (deep link from Planer / shared list).
+  const initialDay = Number(search.get('dag'));
+  const [open, setOpen] = useState<number | null>(Number.isInteger(initialDay) && search.get('dag') !== null && initialDay >= 0 && initialDay < plan.recipeIds.length ? initialDay : null);
+  const [picking, setPicking] = useState<number | null>(null);
+
+  const recipes = recipesForPlan(plan, swaps);
+  const swappedCount = Object.keys(swaps).length;
 
   // Opening a plan makes it the household's current plan; `?uge=` selects the week (from saved plans).
   useEffect(() => {
@@ -39,19 +49,24 @@ export function PlanDetail({ plan }: { plan: MealPlan }) {
   }, [plan.id, search, state.selectedPlanId, state.weekStart, update, state]);
 
   function onSave() {
-    const ok = toggleSaved(plan.id, weekStart);
-    setLimitHit(!ok);
+    setLimitHit(!toggleSaved(plan.id, weekStart));
   }
 
-  // Day price: share of the week's total weighted by the dish's kcal.
-  const kcalSum = plan.days.reduce((a, d) => a + d.kcal, 0);
-  const dayPrice = (kcal: number) => Math.round((price * kcal) / kcalSum);
+  function toggleDay(i: number) {
+    setPicking(null);
+    setOpen((cur) => (cur === i ? null : i));
+  }
 
-  const saveButton = (
-    <div className="col" style={{ gap: 4 }}>
+  const saveRow = (
+    <div className="row wrap ac" style={{ gap: 8 }}>
       <button type="button" className={`chip ${saved ? 'on' : ''}`} onClick={onSave} aria-pressed={saved}>
         {saved ? `Gemt til uge ${isoWeekNumber(weekStart)} ✓` : `Gem til uge ${isoWeekNumber(weekStart)}`}
       </button>
+      {swappedCount > 0 && (
+        <button type="button" className="chip" onClick={() => clearSwaps(plan.id, weekStart)}>
+          {swappedCount} {swappedCount === 1 ? 'ret byttet' : 'retter byttet'} · nulstil
+        </button>
+      )}
       {limitHit && !saved && (
         <span className="s" style={{ fontSize: 11 }}>
           Gratis giver {FREE_TIER.maxSavedPlans} gemte planer. Fjern en under Planer, eller opgrader til Pro.
@@ -60,17 +75,46 @@ export function PlanDetail({ plan }: { plan: MealPlan }) {
     </div>
   );
 
+  const expanded = (i: number) =>
+    picking === i ? (
+      <SwapPicker
+        input={input}
+        dayIndex={i}
+        currentRecipeId={recipes[i]!.id}
+        onPick={(id) => {
+          setSwap(plan.id, weekStart, i, id);
+          setPicking(null);
+        }}
+        onClose={() => setPicking(null)}
+      />
+    ) : (
+      <RecipeCard
+        recipe={recipes[i]!}
+        persons={input.persons}
+        cost={dinnerCost(input, recipes[i]!.id)}
+        swapped={swaps[i] !== undefined}
+        onSwap={() => setPicking(i)}
+        onReset={() => setSwap(plan.id, weekStart, i, null)}
+      />
+    );
+
   const dayList = (
-    <>
-      {plan.days.map((d, i) => (
-        <Link key={d.day} href={`/planer/${plan.id}#${d.day}`} className={`li ${i === plan.days.length - 1 ? 'last' : ''}`} id={d.day} title="Tryk for at bytte ret (fase 1)">
-          <span>
-            <b>{d.day}</b> {d.dish}
-          </span>
-          <span className="s">{kr(dayPrice(d.kcal))}</span>
-        </Link>
+    <div className="col" style={{ gap: 0 }}>
+      {recipes.map((r, i) => (
+        <div key={`${i}-${r.id}`}>
+          <button type="button" className={`li ${i === recipes.length - 1 && open !== i ? 'last' : ''}`} onClick={() => toggleDay(i)} aria-expanded={open === i}>
+            <span>
+              <b>{DAY_NAMES[i]}</b> {r.title}
+              {swaps[i] !== undefined && <span className="mono"> · byttet</span>}
+            </span>
+            <span className="s" style={{ whiteSpace: 'nowrap' }}>
+              {kr(dinnerCost(input, r.id))} {open === i ? '▴' : '▾'}
+            </span>
+          </button>
+          {open === i && expanded(i)}
+        </div>
       ))}
-    </>
+    </div>
   );
 
   const stats = (size: number) => (
@@ -83,13 +127,13 @@ export function PlanDetail({ plan }: { plan: MealPlan }) {
       </div>
       <div>
         <p className="num" style={{ fontSize: size }}>
-          {n(plan.kcalPerDay)}
+          {n(planDinnerKcal(plan, swaps))}
         </p>
-        <p className="mono">kcal / dag</p>
+        <p className="mono">kcal / aftensmad</p>
       </div>
       <div>
         <p className="num" style={{ fontSize: size }}>
-          {pers}
+          {input.persons}
         </p>
         <p className="mono">pers</p>
       </div>
@@ -116,13 +160,14 @@ export function PlanDetail({ plan }: { plan: MealPlan }) {
             {plan.title}
           </p>
           {stats(26)}
-          <div className="row wrap ac" style={{ gap: 8, marginTop: 4 }}>
-            <WeekPicker />
-          </div>
-          {saveButton}
+          <WeekPicker />
+          {saveRow}
+          <p className="s" style={{ marginTop: 4 }}>
+            Tryk på en dag for opskrift og for at bytte ret.
+          </p>
           {dayList}
           <Link href="/indkob/strategi" className="btn accent mt-auto">
-            Handl ind →
+            Handl ind · {kr(results[state.strategy].total)} →
           </Link>
           <PriceSource weekStart={weekStart} compact />
           <Attribution sources={['frida']} />
@@ -140,19 +185,21 @@ export function PlanDetail({ plan }: { plan: MealPlan }) {
           {stats(40)}
           <div className="row wrap ae" style={{ gap: 20 }}>
             <WeekPicker />
-            {saveButton}
+            {saveRow}
           </div>
-          <div className="grid" style={{ gridTemplateColumns: `repeat(${plan.days.length}, 1fr)` }}>
-            {plan.days.map((d, i) => (
-              <Link key={d.day} href={`/planer/${plan.id}#${d.day}`} className="col" style={{ gap: 0 }} title="Tryk for at bytte ret (fase 1)">
-                <Placeholder tone={i % 2 === 0 ? 'c' : 'b'} height={80} />
+          <div className="grid" style={{ gridTemplateColumns: `repeat(${recipes.length}, 1fr)` }}>
+            {recipes.map((r, i) => (
+              <button key={`${i}-${r.id}`} type="button" className="col day" style={{ gap: 0, textAlign: 'left' }} onClick={() => toggleDay(i)} aria-expanded={open === i}>
+                <Placeholder tone={i % 2 === 0 ? 'c' : 'b'} height={80} style={open === i ? { outline: '3px solid var(--ink)' } : undefined} />
                 <p className="mono" style={{ marginTop: 6 }}>
-                  {d.day} · {kr(dayPrice(d.kcal))}
+                  {DAY_NAMES[i]} · {kr(dinnerCost(input, r.id))}
+                  {swaps[i] !== undefined ? ' · byttet' : ''}
                 </p>
-                <p className="s">{d.dish}</p>
-              </Link>
+                <p className="s">{r.title}</p>
+              </button>
             ))}
           </div>
+          {open === null ? <p className="s">Tryk på en dag for opskrift og for at bytte ret.</p> : expanded(open)}
           <div className="mt-auto col" style={{ gap: 4 }}>
             <PriceSource weekStart={weekStart} />
             <Attribution sources={['frida']} />

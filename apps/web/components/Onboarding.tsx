@@ -6,6 +6,7 @@ import { AVOID_PREFS, LIKE_PREFS, STORES } from '@/lib/mock-data';
 import { matchingCountDisplay } from '@/lib/matching';
 import { n } from '@/lib/format';
 import { persons, useStore } from '@/lib/store';
+import { useOffers } from '@/lib/use-pricing';
 import { ChipToggle, Counter, Slider } from './Chips';
 import { Screen, type Tone } from './Screen';
 
@@ -20,13 +21,14 @@ const STEPS = [
 export const ONBOARDING_STEPS = STEPS.length;
 
 export function Onboarding({ step }: { step: number }) {
-  const { state, update } = useStore();
+  const { state, update, weekStart } = useStore();
+  const offers = useOffers();
   const router = useRouter();
   const idx = Math.min(Math.max(step, 1), STEPS.length) - 1;
   const current = STEPS[idx]!;
   const prev = STEPS[idx - 1];
   const next = STEPS[idx + 1];
-  const matches = matchingCountDisplay(state);
+  const matches = matchingCountDisplay({ ...state, persons: persons(state), weekStart, offers });
 
   function finish() {
     update({ onboarded: true });

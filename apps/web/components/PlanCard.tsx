@@ -19,7 +19,7 @@ export function PlanRow({ plan, price, storesLabel }: { plan: MealPlan; price: n
       <div>
         <p className="h2">{plan.title}</p>
         <p className="s">
-          {kr(price)} · {n(plan.kcalPerDay)} kcal · {plan.days.length < 7 ? `${plan.days.length} dage · ` : ''}
+          {kr(price)} · {n(plan.kcalPerDay)} kcal · {plan.recipeIds.length < 7 ? `${plan.recipeIds.length} dage · ` : ''}
           {storesLabel}
         </p>
       </div>
@@ -37,7 +37,7 @@ export function PlanTile({ plan, price }: { plan: MealPlan; price: number }) {
         {plan.title}
       </p>
       <p className="s">
-        {kr(price)} · {n(plan.kcalPerDay)} kcal
+        {kr(price)} · {n(plan.kcalPerDay)} kcal · {plan.recipeIds.length} retter
       </p>
     </Link>
   );

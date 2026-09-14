@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@madplan/checkout": "workspace:*",
+    "@madplan/domain": "workspace:*",
     "@madplan/legal": "workspace:*",
     "next": "^16.3.5",
     "react": "^19.3.0",

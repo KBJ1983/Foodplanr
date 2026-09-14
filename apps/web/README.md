@@ -22,6 +22,18 @@ pnpm --filter @madplan/web build
 | `/indkob` | shopping list grouped per store; desktop adds profile panel | white |
 | `/profil` | household, key numbers, stores, preferences, toggles | A (magenta) |
 
+## Data chain (mirrors the DB schema; see ../../docs/PRICING.md)
+
+`lib/mock-data.ts` plans → `lib/recipes.ts` (26 own recipes, ingredient lines + steps) → `lib/ingredients.ts`
+(ontology, ~60 items with baseline estimates) ← `lib/offers.ts` (fixture offers in the pipeline's
+`NormalizedOffer` shape, with `runFrom`/`runTill`). `lib/engine.ts` scales recipes to the household,
+aggregates needs, prices each need per store (valid offer in the planned week → packs × offer price, else
+baseline estimate) and builds the three strategies. Every line carries its price origin, which the
+shopping list shows ("Tilbud … gyldig 14.–20. sep." vs "Normalpris, estimat").
+
+Days unfold into the recipe (`RecipeCard`) and can be swapped (`SwapPicker`, price delta per alternative);
+swaps live in state per plan + week.
+
 ## What is real and what is example data
 
 - **Week and price source:** every plan/strategy/list screen states the ISO week being planned
@@ -30,8 +42,8 @@ pnpm --filter @madplan/web build
 - **Real:** navigation, state (localStorage), onboarding inputs, saved plans, strategy computation
   (`lib/strategy.ts`, tested), checklist counter, `copy_list` handoff via `@madplan/checkout`,
   Frida attribution via `@madplan/legal` where kcal is shown.
-- **Example data:** the six plans, dishes and per-store prices in `lib/mock-data.ts` are ours and
-  invented. The archive headline number is scaled to the planned catalogue size and labelled so.
+- **Example data:** plans, recipes, ingredient baselines, store price indexes and the offer fixtures are
+  ours and invented. The archive headline number is scaled to the planned catalogue size and labelled so.
 - **Placeholders:** photos and the route map are striped colour blocks, as in the design. No
   third-party imagery, ever.
 

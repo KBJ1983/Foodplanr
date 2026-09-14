@@ -5,20 +5,26 @@ import { Nav } from '@/components/Nav';
 import { Placeholder } from '@/components/PlanCard';
 import { PriceSource } from '@/components/PriceSource';
 import { Screen } from '@/components/Screen';
-import { kr, n } from '@/lib/format';
-import { planById } from '@/lib/mock-data';
-import { FREE_TIER, useStore } from '@/lib/store';
-import { planPrice } from '@/lib/strategy';
+import { planPrice, recipesForPlan } from '@/lib/engine';
+import { kr } from '@/lib/format';
+import { DAY_NAMES, planById, type MealPlan } from '@/lib/mock-data';
+import { FREE_TIER, persons, swapKey, useStore } from '@/lib/store';
+import { useOffers } from '@/lib/use-pricing';
 import { relativeWeekLabel, weekLabel } from '@/lib/week';
 
 /**
- * "Planer": the household's plan for the week being planned, plus saved plans.
- * White screen; the plan detail keeps its own colours.
+ * "Planer": the household's plan for the week being planned (with its dishes,
+ * swaps included), plus saved plans. White screen.
  */
 export default function PlanerPage() {
   const { state, ready, weekStart, isSaved } = useStore();
+  const offers = useOffers();
+  const pers = persons(state);
   const current = state.selectedPlanId ? planById(state.selectedPlanId) : undefined;
   const saved = [...state.saved].sort((a, b) => a.weekStart.localeCompare(b.weekStart));
+
+  const priceOf = (plan: MealPlan, ws: string) =>
+    planPrice({ plan, persons: pers, weekStart: ws, offers, fixedStores: state.stores, swaps: state.swaps[swapKey(plan.id, ws)] ?? {} });
 
   return (
     <Screen tone="white">
@@ -28,16 +34,27 @@ export default function PlanerPage() {
         <p className="h1">Jeres madplan</p>
 
         {!ready ? null : current ? (
-          <Link href={`/planer/${current.id}`} className="li strong" style={{ padding: '14px 0' }}>
-            <div>
-              <p className="h2">{current.title}</p>
-              <p className="s">
-                {kr(planPrice(current, state.stores))} · {n(current.kcalPerDay)} kcal · {relativeWeekLabel(weekStart).toLowerCase()}
-                {isSaved(current.id, weekStart) ? ' · gemt' : ''}
-              </p>
-            </div>
-            <Placeholder tone={current.tone} height={54} style={{ width: 54, flex: 'none' }} />
-          </Link>
+          <div className="col" style={{ gap: 0 }}>
+            <Link href={`/planer/${current.id}`} className="li strong" style={{ padding: '14px 0' }}>
+              <div>
+                <p className="h2">{current.title}</p>
+                <p className="s">
+                  {kr(priceOf(current, weekStart))} · {relativeWeekLabel(weekStart).toLowerCase()}
+                  {isSaved(current.id, weekStart) ? ' · gemt' : ''}
+                  {Object.keys(state.swaps[swapKey(current.id, weekStart)] ?? {}).length ? ' · retter byttet' : ''}
+                </p>
+              </div>
+              <Placeholder tone={current.tone} height={54} style={{ width: 54, flex: 'none' }} />
+            </Link>
+            {recipesForPlan(current, state.swaps[swapKey(current.id, weekStart)] ?? {}).map((r, i) => (
+              <Link key={i} href={`/planer/${current.id}`} className="li" style={{ padding: '8px 0' }}>
+                <span>
+                  <b>{DAY_NAMES[i]}</b> {r.title}
+                </span>
+                <span className="s">{r.kcalPerServing} kcal</span>
+              </Link>
+            ))}
+          </div>
         ) : (
           <div className="col" style={{ gap: 10 }}>
             <p className="p">I har ikke valgt en madplan til {weekLabel(weekStart).toLowerCase()} endnu.</p>
@@ -62,7 +79,7 @@ export default function PlanerPage() {
                   <span>
                     <b>{relativeWeekLabel(s.weekStart)}</b> · {plan.title}
                   </span>
-                  <span className="s">{kr(planPrice(plan, state.stores))}</span>
+                  <span className="s">{kr(priceOf(plan, s.weekStart))}</span>
                 </Link>
               );
             })}

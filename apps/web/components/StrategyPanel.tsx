@@ -1,28 +1,27 @@
 'use client';
 
 import Link from 'next/link';
+import { STRATEGY_LABEL, type Strategy } from '@/lib/engine';
+import { kr, n } from '@/lib/format';
 import type { MealPlan } from '@/lib/mock-data';
 import { storeById } from '@/lib/mock-data';
-import { kr, n } from '@/lib/format';
 import { useStore } from '@/lib/store';
-import { STRATEGY_LABEL, allStrategies, type Strategy } from '@/lib/strategy';
-import { isoWeekNumber } from '@/lib/week';
+import { usePricing } from '@/lib/use-pricing';
+import { isoWeekNumber, weekRangeLabel } from '@/lib/week';
 import { Placeholder } from './PlanCard';
 import { PriceSource } from './PriceSource';
 
 /**
- * Blue strategy panel: big total, breakdown per store, map placeholder, the two
- * alternatives as rows. Used full-screen on mobile and as the right panel on
- * desktop next to the week view.
+ * Blue strategy panel: big total, offers used and savings, breakdown per
+ * store, map placeholder, the two alternatives as rows.
  */
 export function StrategyPanel({ plan, ctaHref = '/indkob', compact = false }: { plan: MealPlan; ctaHref?: string; compact?: boolean }) {
   const { state, update, weekStart } = useStore();
-  const results = allStrategies(plan, state.stores);
-  const active = results[state.strategy];
+  const { results, active } = usePricing(plan);
   const others = (Object.keys(results) as Strategy[]).filter((k) => k !== state.strategy);
   const cheapestTotal = results.cheapest.total;
   const single = results.fewestStops.total;
-  const saving = single - active.total;
+  const vsSingle = single - active.total;
 
   const breakdown = active.groups.map((g) => `${storeById(g.store).name} ${kr(g.total)}`).join(' · ');
   const storesLabel = (s: Strategy) => results[s].groups.map((g) => storeById(g.store).name).join(', ');
@@ -37,15 +36,18 @@ export function StrategyPanel({ plan, ctaHref = '/indkob', compact = false }: { 
         <small> kr</small>
       </p>
       <p className="p" style={{ fontSize: 13, opacity: 0.85, marginTop: -6 }}>
-        {saving > 0 ? `Du sparer ${kr(saving)} mod ét stop. ` : active.total > cheapestTotal ? `${kr(active.total - cheapestTotal)} mere end billigst. ` : ''}
-        {breakdown}.
-        {active.missing.length > 0 ? ` ${active.missing.length} varer findes ikke i de valgte butikker.` : ''}
+        <b>
+          {active.offerLines} af {active.lineCount} varer på tilbud
+        </b>{' '}
+        ({weekRangeLabel(weekStart)}). Du sparer {kr(active.saved)} mod normalpris
+        {vsSingle > 0.5 ? ` og ${kr(vsSingle)} mod ét stop` : active.total - cheapestTotal > 0.5 ? `; ${kr(active.total - cheapestTotal)} mere end billigst` : ''}. {breakdown}.
       </p>
       <Placeholder tone="white" height={compact ? 120 : 90} label="kort: rute" style={{ ['--img-bg' as string]: 'rgb(255 255 255 / 0.5)' }} />
       {others.map((s) => (
         <button key={s} type="button" className="li strong" onClick={() => update({ strategy: s })} aria-label={`Skift til ${STRATEGY_LABEL[s]}`}>
           <span>
             <b>{STRATEGY_LABEL[s]}</b> · {storesLabel(s) || 'ingen butikker valgt'}
+            <span className="s"> · {results[s].offerLines} tilbud</span>
           </span>
           <b>{kr(results[s].total)}</b>
         </button>

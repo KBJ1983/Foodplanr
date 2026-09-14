@@ -5,8 +5,8 @@
  * localStorage. Replaced by server state + auth in phase 1.
  */
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import type { Strategy, Swaps } from './engine';
 import type { StoreId } from './mock-data';
-import type { Strategy } from './strategy';
 import { mondayOf } from './week';
 
 export interface SavedPlan {
@@ -26,8 +26,10 @@ export interface AppState {
   /** ISO Monday of the week being planned. */
   weekStart: string | null;
   saved: SavedPlan[];
+  /** "Byt ret": `${planId}|${weekStart}` → day index → recipe id. */
+  swaps: Record<string, Swaps>;
   strategy: Strategy;
-  /** `${planId}|${item name}` for checked lines. */
+  /** `${planId}|${ingredientId}` for checked lines. */
   checked: string[];
   onboarded: boolean;
   shareWithHousehold: boolean;
@@ -46,6 +48,7 @@ export const DEFAULT_STATE: AppState = {
   selectedPlanId: null,
   weekStart: null,
   saved: [],
+  swaps: {},
   strategy: 'cheapest',
   checked: [],
   onboarded: false,
@@ -53,7 +56,9 @@ export const DEFAULT_STATE: AppState = {
   sundayReminder: false,
 };
 
-const KEY = 'foodplanr.state.v1';
+const KEY = 'foodplanr.state.v2';
+
+export const swapKey = (planId: string, weekStart: string) => `${planId}|${weekStart}`;
 
 interface Ctx {
   state: AppState;
@@ -62,10 +67,13 @@ interface Ctx {
   /** The week being planned; defaults to the current week. */
   weekStart: string;
   update: (patch: Partial<AppState> | ((s: AppState) => Partial<AppState>)) => void;
-  toggleChecked: (planId: string, itemName: string) => void;
+  toggleChecked: (planId: string, ingredientId: string) => void;
   /** Save/unsave a plan for a week. Returns false when the free limit blocks saving. */
   toggleSaved: (planId: string, weekStart: string) => boolean;
   isSaved: (planId: string, weekStart: string) => boolean;
+  /** Swap the dish on a day (null = back to the plan's own dish). */
+  setSwap: (planId: string, weekStart: string, dayIndex: number, recipeId: string | null) => void;
+  clearSwaps: (planId: string, weekStart: string) => void;
   reset: () => void;
 }
 
@@ -102,9 +110,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       ready,
       weekStart,
       update: (patch) => setState((s) => ({ ...s, ...(typeof patch === 'function' ? patch(s) : patch) })),
-      toggleChecked: (planId, itemName) =>
+      toggleChecked: (planId, ingredientId) =>
         setState((s) => {
-          const key = `${planId}|${itemName}`;
+          const key = `${planId}|${ingredientId}`;
           const checked = s.checked.includes(key) ? s.checked.filter((k) => k !== key) : [...s.checked, key];
           return { ...s, checked };
         }),
@@ -118,6 +126,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return true;
       },
       isSaved,
+      setSwap: (planId, ws, dayIndex, recipeId) =>
+        setState((s) => {
+          const key = swapKey(planId, ws);
+          const cur = { ...(s.swaps[key] ?? {}) };
+          if (recipeId === null) delete cur[dayIndex];
+          else cur[dayIndex] = recipeId;
+          return { ...s, swaps: { ...s.swaps, [key]: cur } };
+        }),
+      clearSwaps: (planId, ws) =>
+        setState((s) => {
+          const next = { ...s.swaps };
+          delete next[swapKey(planId, ws)];
+          return { ...s, swaps: next };
+        }),
       reset: () => setState(DEFAULT_STATE),
     };
   }, [state, ready]);
