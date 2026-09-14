@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import { PLANS, planById } from '@/lib/mock-data';
 import { PlanDetail } from './PlanDetail';
 
@@ -10,5 +11,10 @@ export default async function PlanPage({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const plan = planById(id);
   if (!plan) notFound();
-  return <PlanDetail plan={plan} />;
+  // PlanDetail reads `?uge=` via useSearchParams, which needs a Suspense boundary for static rendering.
+  return (
+    <Suspense fallback={null}>
+      <PlanDetail plan={plan} />
+    </Suspense>
+  );
 }

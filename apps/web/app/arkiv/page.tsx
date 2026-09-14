@@ -9,6 +9,7 @@ import { matchingCountDisplay, matchingPlans } from '@/lib/matching';
 import { PLANS, storeById, type PlanTag } from '@/lib/mock-data';
 import { persons, useStore } from '@/lib/store';
 import { planPrice, preferred } from '@/lib/strategy';
+import { weekLabel } from '@/lib/week';
 
 type Filter = 'alle' | 'budget' | PlanTag;
 
@@ -24,7 +25,7 @@ const FILTERS: { key: Filter; label: string }[] = [
 
 /** Yellow archive: headline number, filter chips, list (mobile) / 4-column grid (desktop). */
 export default function ArkivPage() {
-  const { state } = useStore();
+  const { state, weekStart } = useStore();
   const [filter, setFilter] = useState<Filter>('alle');
   const count = matchingCountDisplay(state);
   const matching = matchingPlans(state);
@@ -49,6 +50,7 @@ export default function ArkivPage() {
           <Nav />
           <span className="chip on desk-only">Sortér: Billigst</span>
         </div>
+        <p className="mono">Madplaner til {weekLabel(weekStart).toLowerCase()}</p>
         <div className="row ae wrap" style={{ gap: 16 }}>
           <p className="num" style={{ fontSize: 'clamp(56px, 10vw, 110px)' }}>
             {count}

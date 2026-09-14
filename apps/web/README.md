@@ -13,17 +13,21 @@ pnpm --filter @madplan/web build
 
 | Route | Screen | Colour |
 |---|---|---|
-| `/` | redirect → onboarding or archive | — |
+| `/` | front page: 5-questions poster, how it works, way in (returning households → Mine planer) | A (magenta) |
 | `/onboarding/1..5` | Personer · Butikker · Budget · Råvarer · Kalorier | C · B · A · C · B |
 | `/arkiv` | archive with headline count, filter chips, list / 4-col grid | C (yellow) |
-| `/planer/[id]` | week detail; desktop adds the blue strategy panel | white |
+| `/planer` | the household's plan for the planned week + saved plans (free: 3, one week ahead) | white |
+| `/planer/[id]` | week detail with week picker and "Gem"; desktop adds the blue strategy panel | white |
 | `/indkob/strategi` | Billigst / Færrest steder / Faste butikker | B (blue) |
 | `/indkob` | shopping list grouped per store; desktop adds profile panel | white |
 | `/profil` | household, key numbers, stores, preferences, toggles | A (magenta) |
 
 ## What is real and what is example data
 
-- **Real:** navigation, state (localStorage), onboarding inputs, strategy computation
+- **Week and price source:** every plan/strategy/list screen states the ISO week being planned
+  (`lib/week.ts`, tested) and a `PriceSource` line saying where prices come from. Today that is our
+  own example prices; when a source is `approved` the line names it and the offer period.
+- **Real:** navigation, state (localStorage), onboarding inputs, saved plans, strategy computation
   (`lib/strategy.ts`, tested), checklist counter, `copy_list` handoff via `@madplan/checkout`,
   Frida attribution via `@madplan/legal` where kcal is shown.
 - **Example data:** the six plans, dishes and per-store prices in `lib/mock-data.ts` are ours and
