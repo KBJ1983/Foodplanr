@@ -20,43 +20,51 @@ function periodLabel(runFrom: string, runTill: string): string {
   return from.getMonth() === till.getMonth() ? `${a}–${b}` : `${a} ${m[from.getMonth()]}–${b}`;
 }
 
-/** Store picker for one line: price in every store, offers marked. */
-function MovePicker({ line, planId, onDone }: { line: LineCost; planId: string; onDone: () => void }) {
-  const { weekStart, setLineOverride } = useStore();
+/** Store picker for one line: price in each of the household's chosen stores (offers marked ★), plus the UDSOLGT list. */
+function MovePicker({ line, planId, onDone, excludeCurrent = false }: { line: LineCost; planId: string; onDone: () => void; excludeCurrent?: boolean }) {
+  const { state, weekStart, setLineOverride } = useStore();
   const offers = useOffers();
-  const options = storeOptions(line, offers, weekStart).sort((a, b) => a.price - b.price);
-  const isSoldOut = false;
+  const chosen = new Set(state.stores);
+  const options = storeOptions(line, offers, weekStart)
+    .filter((o) => chosen.has(o.store) && (!excludeCurrent || o.store !== line.store))
+    .sort((a, b) => a.price - b.price);
   return (
     <div className="move" role="group" aria-label={`Flyt ${line.name}`}>
-      <span className="mono">Flyt til</span>
-      <div className="row wrap" style={{ gap: 6 }}>
-        {options.map((o) => (
-          <button
-            key={o.store}
-            type="button"
-            className="chip"
-            aria-pressed={o.store === line.store && !isSoldOut}
-            onClick={() => {
-              setLineOverride(planId, weekStart, line.ingredientId, { store: o.store });
-              onDone();
-            }}
-            title={o.kind === 'offer' && o.offer ? `${o.offer.heading} · gyldig ${periodLabel(o.offer.runFrom, o.offer.runTill)}` : 'Normalpris, estimat'}
-          >
-            {storeById(o.store).name} · {kr(o.price)}
-            {o.kind === 'offer' ? ' ★' : ''}
-          </button>
-        ))}
-      </div>
+      <span className="mono">Flyt til · dine butikker</span>
+      {options.length === 0 ? (
+        <span className="s">
+          {state.stores.length === 0 ? 'Vælg jeres butikker under Profil for at kunne flytte varer.' : 'Ingen andre af jeres butikker at flytte til. Tilføj flere under Profil.'}
+        </span>
+      ) : (
+        <div className="row wrap" style={{ gap: 6 }}>
+          {options.map((o) => (
+            <button
+              key={o.store}
+              type="button"
+              className="chip"
+              aria-pressed={o.store === line.store}
+              onClick={() => {
+                setLineOverride(planId, weekStart, line.ingredientId, { store: o.store });
+                onDone();
+              }}
+              title={o.kind === 'offer' && o.offer ? `${o.offer.heading} · gyldig ${periodLabel(o.offer.runFrom, o.offer.runTill)}` : 'Normalpris, estimat'}
+            >
+              {storeById(o.store).name} · {kr(o.price)}
+              {o.kind === 'offer' ? ' ★' : ''}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="row wrap" style={{ gap: 6 }}>
         <button
           type="button"
-          className="chip outline"
+          className="chip grey"
           onClick={() => {
             setLineOverride(planId, weekStart, line.ingredientId, { soldOut: true });
             onDone();
           }}
         >
-          Udsolgt her
+          → UDSOLGT-liste
         </button>
         {line.movedFrom && (
           <button
@@ -75,7 +83,7 @@ function MovePicker({ line, planId, onDone }: { line: LineCost; planId: string; 
         </button>
       </div>
       <span className="s" style={{ fontSize: 10 }}>
-        ★ = tilbud i den butik denne uge
+        ★ = tilbud i den butik denne uge. Kun jeres valgte butikker vises.
       </span>
     </div>
   );
@@ -136,7 +144,6 @@ function Line({ line, planId, open, onToggleMenu }: { line: LineCost; planId: st
 export function ShoppingList({ plan, columns = false }: { plan: MealPlan; columns?: boolean }) {
   const { state, weekStart, setLineOverride, clearLineOverrides } = useStore();
   const { active: result, lineOverrides } = usePricing(plan);
-  const offers = useOffers();
   const total = result.lineCount;
   const done = result.groups.reduce((a, g) => a + g.lines.filter((l) => state.checked.includes(`${plan.id}|${l.ingredientId}`)).length, 0);
   const [copied, setCopied] = useState(false);
@@ -199,7 +206,7 @@ export function ShoppingList({ plan, columns = false }: { plan: MealPlan; column
       </div>
       <p className="s" style={{ marginTop: -4 }}>
         {STRATEGY_LABEL[state.strategy]} · {result.groups.length} {result.groups.length === 1 ? 'butik' : 'butikker'}. Fed pris = tilbud. Øvrige linjer er
-        estimeret normalpris. Tryk "flyt · udsolgt" på en vare for at ændre butik.
+        estimeret normalpris. Tryk "flyt · udsolgt" på en vare for at flytte den til en af jeres butikker eller til UDSOLGT-listen.
         {overrideCount > 0 && (
           <>
             {' '}
@@ -229,59 +236,41 @@ export function ShoppingList({ plan, columns = false }: { plan: MealPlan; column
         })}
       </div>
 
-      {result.soldOut.length > 0 && (
-        <div className="col" style={{ gap: 0, marginTop: 8 }}>
-          <div className="blk grey">
-            <b>Udsolgt</b>
-            <span>
-              {result.soldOut.length} {result.soldOut.length === 1 ? 'vare' : 'varer'} · find et andet sted
-            </span>
-          </div>
-          {result.soldOut.map((l) => (
-            <div key={l.ingredientId} className="col" style={{ gap: 0 }}>
-              <div className="li line">
-                <span className="col" style={{ gap: 2 }}>
-                  <span>
-                    {l.name} {l.qtyLabel}
-                  </span>
-                  <span className="s offer-note">Udsolgt i {storeById(l.store).name} · var {kr(l.price)}</span>
-                </span>
-                <span className="row" style={{ gap: 6 }}>
-                  <button type="button" className="chip" onClick={() => setSoldOutPick((cur) => (cur === l.ingredientId ? null : l.ingredientId))}>
-                    Flyt til …
-                  </button>
-                  <button type="button" className="chip outline" onClick={() => setLineOverride(plan.id, weekStart, l.ingredientId, null)}>
-                    Tilbage
-                  </button>
-                </span>
-              </div>
-              {soldOutPick === l.ingredientId && (
-                <div className="move">
-                  <div className="row wrap" style={{ gap: 6 }}>
-                    {storeOptions(l, offers, weekStart)
-                      .filter((o) => o.store !== l.store)
-                      .sort((a, b) => a.price - b.price)
-                      .map((o) => (
-                        <button
-                          key={o.store}
-                          type="button"
-                          className="chip"
-                          onClick={() => {
-                            setLineOverride(plan.id, weekStart, l.ingredientId, { store: o.store });
-                            setSoldOutPick(null);
-                          }}
-                        >
-                          {storeById(o.store).name} · {kr(o.price)}
-                          {o.kind === 'offer' ? ' ★' : ''}
-                        </button>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+      {/* General UDSOLGT list — always present; lines are moved here from the store groups. */}
+      <div className="col" style={{ gap: 0, marginTop: 8 }} id="udsolgt">
+        <div className="blk grey">
+          <b>UDSOLGT-liste</b>
+          <span>
+            {result.soldOut.length === 0 ? 'tom' : `${result.soldOut.length} ${result.soldOut.length === 1 ? 'vare' : 'varer'} · find et andet sted`}
+          </span>
         </div>
-      )}
+        {result.soldOut.length === 0 && (
+          <p className="s" style={{ padding: '8px 0 0' }}>
+            Varer, butikken ikke havde. Brug "flyt · udsolgt" på en vare og vælg "→ UDSOLGT-liste". Herfra kan de flyttes til en af jeres andre butikker.
+          </p>
+        )}
+        {result.soldOut.map((l) => (
+          <div key={l.ingredientId} className="col" style={{ gap: 0 }}>
+            <div className="li line">
+              <span className="col" style={{ gap: 2 }}>
+                <span>
+                  {l.name} {l.qtyLabel}
+                </span>
+                <span className="s offer-note">Udsolgt i {storeById(l.store).name} · var {kr(l.price)}</span>
+              </span>
+              <span className="row" style={{ gap: 6 }}>
+                <button type="button" className="chip" aria-expanded={soldOutPick === l.ingredientId} onClick={() => setSoldOutPick((cur) => (cur === l.ingredientId ? null : l.ingredientId))}>
+                  Flyt til …
+                </button>
+                <button type="button" className="chip outline" onClick={() => setLineOverride(plan.id, weekStart, l.ingredientId, null)}>
+                  Tilbage
+                </button>
+              </span>
+            </div>
+            {soldOutPick === l.ingredientId && <MovePicker line={l} planId={plan.id} excludeCurrent onDone={() => setSoldOutPick(null)} />}
+          </div>
+        ))}
+      </div>
       <PriceSource weekStart={weekStart} compact />
     </>
   );

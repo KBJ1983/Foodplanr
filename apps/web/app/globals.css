@@ -491,6 +491,10 @@ input[type='range'].slider::-moz-range-thumb {
   background: #e9e8e4;
   color: var(--ink);
 }
+.chip.grey {
+  background: #e9e8e4;
+  color: var(--ink);
+}
 .more {
   text-decoration: underline;
   font-size: 10px;
