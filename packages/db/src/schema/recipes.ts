@@ -9,9 +9,9 @@ import {
   timestamp,
   uuid,
 } from 'drizzle-orm/pg-core';
-import { recipeOriginEnum, recipeStatusEnum } from './enums.js';
-import { ingredient } from './ingredients.js';
-import { appUser } from './users.js';
+import { recipeOriginEnum, recipeStatusEnum } from './enums';
+import { ingredient } from './ingredients';
+import { appUser } from './users';
 
 /** 100 % our own (or explicitly licensed) recipes. No import from recipe sites — ever. */
 export const recipe = pgTable(

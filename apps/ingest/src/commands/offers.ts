@@ -7,7 +7,7 @@ import {
   type OfferRepository,
 } from '@madplan/db';
 import { resolveEnv, type RunMode, type SourceId } from '@madplan/legal';
-import { secrets } from '../env.js';
+import { secrets } from '../env';
 
 export interface OffersCommandOptions {
   source: SourceId;

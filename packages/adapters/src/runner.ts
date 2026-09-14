@@ -17,10 +17,10 @@ import {
   type RunMode,
   type SourceId,
 } from '@madplan/legal';
-import { FixtureSallingClient, LiveSallingClient, SallingAdapter } from './salling/adapter.js';
-import { TjekAdapter } from './tjek/adapter.js';
-import { FixtureTjekClient, LiveTjekClient } from './tjek/client.js';
-import type { AdapterContext, IngestResult, IngestStats, OfferAdapter } from './types.js';
+import { FixtureSallingClient, LiveSallingClient, SallingAdapter } from './salling/adapter';
+import { TjekAdapter } from './tjek/adapter';
+import { FixtureTjekClient, LiveTjekClient } from './tjek/client';
+import type { AdapterContext, IngestResult, IngestStats, OfferAdapter } from './types';
 
 export interface RunnerOptions {
   source: SourceId;

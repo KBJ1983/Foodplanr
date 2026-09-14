@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { importFridaCsv } from '@madplan/adapters';
 import { DrizzleIngredientRepository, MemoryIngredientRepository, createDb } from '@madplan/db';
 import { assertSourceAllowed, getSource, resolveEnv, whitelistRecords } from '@madplan/legal';
-import { secrets } from '../env.js';
+import { secrets } from '../env';
 
 export interface FridaCommandOptions {
   file: string;

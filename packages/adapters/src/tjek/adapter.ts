@@ -6,9 +6,9 @@ import {
   type NormalizedOffer,
   type RawQuantity,
 } from '@madplan/domain';
-import type { AdapterContext, OfferAdapter, WhitelistedRecord } from '../types.js';
-import type { TjekClient } from './client.js';
-import type { TjekOffer, TjekWhitelistedRecord } from './types.js';
+import type { AdapterContext, OfferAdapter, WhitelistedRecord } from '../types';
+import type { TjekClient } from './client';
+import type { TjekOffer, TjekWhitelistedRecord } from './types';
 
 const PAGE_SIZE = 100;
 

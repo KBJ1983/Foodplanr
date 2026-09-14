@@ -8,7 +8,7 @@ import {
   resolveEnv,
   whitelistRecord,
   whitelistRecords,
-} from '../src/index.js';
+} from '../src/index';
 
 describe('adapter gate — mode/status matrix', () => {
   it('pending source: fixtures ok in dev/test, live never', () => {

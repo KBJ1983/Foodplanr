@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getSource, whitelistRecords } from '@madplan/legal';
-import { importFridaCsv, matchNutrient, parseCsv, readTextFixture } from '../src/index.js';
+import { importFridaCsv, matchNutrient, parseCsv, readTextFixture } from '../src/index';
 
 const readSample = () =>
   readTextFixture(import.meta.url, '..', 'src', 'frida', 'fixtures', 'frida_sample.csv');

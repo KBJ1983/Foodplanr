@@ -1,5 +1,5 @@
 import { boolean, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
-import { userPlanEnum } from './enums.js';
+import { userPlanEnum } from './enums';
 
 /** Named app_user because `user` is reserved in Postgres. */
 export const appUser = pgTable('app_user', {

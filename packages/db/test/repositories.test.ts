@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { runOfferIngest } from '@madplan/adapters';
-import { MemoryOfferRepository } from '../src/index.js';
+import { MemoryOfferRepository } from '../src/index';
 
 describe('MemoryOfferRepository', () => {
   it('upserts by (source, sourceId) and reports retailers created', async () => {

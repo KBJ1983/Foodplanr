@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { FieldNotWhitelistedError, SourceNotAllowedError } from '@madplan/legal';
-import { runOfferIngest, type OfferAdapter } from '../src/index.js';
+import { runOfferIngest, type OfferAdapter } from '../src/index';
 
 describe('adapter runner — gate enforcement', () => {
   it('refuses live tjek while status is pending, before constructing any client', async () => {

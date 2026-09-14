@@ -1,7 +1,7 @@
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { createDb } from './client.js';
+import { createDb } from './client';
 
 const url = process.env.DATABASE_URL;
 if (!url) {

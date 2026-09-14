@@ -1,4 +1,4 @@
-import type { SizeUnit } from './types.js';
+import type { SizeUnit } from './types';
 
 interface UnitDef {
   base: SizeUnit;

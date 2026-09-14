@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { splitBundleHeading } from '../src/index.js';
+import { splitBundleHeading } from '../src/index';
 
 describe('splitBundleHeading', () => {
   it('returns a single heading unchanged', () => {

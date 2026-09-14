@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp, date } from 'drizzle-orm/pg-core';
-import { legalStatusEnum } from './enums.js';
+import { legalStatusEnum } from './enums';
 
 /**
  * Mirror of packages/legal/src/source_registry.ts for the admin UI and sync

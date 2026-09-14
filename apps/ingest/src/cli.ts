@@ -7,10 +7,10 @@
  */
 import { Command, InvalidArgumentError } from 'commander';
 import { SOURCE_IDS, SourceNotAllowedError, FieldNotWhitelistedError, type SourceId } from '@madplan/legal';
-import { loadEnv } from './env.js';
-import { offersCommand } from './commands/offers.js';
-import { fridaCommand } from './commands/frida.js';
-import { sourcesCommand } from './commands/sources.js';
+import { loadEnv } from './env';
+import { offersCommand } from './commands/offers';
+import { fridaCommand } from './commands/frida';
+import { sourcesCommand } from './commands/sources';
 
 loadEnv();
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getSource } from '@madplan/legal';
-import { runOfferIngest } from '../src/index.js';
+import { runOfferIngest } from '../src/index';
 
 describe('Salling food-waste adapter (fixtures)', () => {
   it('maps clearances to whitelisted, normalised food_waste offers', async () => {

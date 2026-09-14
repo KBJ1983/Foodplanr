@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { lookupUnit, toBaseAmount } from '../src/index.js';
+import { lookupUnit, toBaseAmount } from '../src/index';
 
 describe('units', () => {
   it('maps Danish retail unit symbols to base units', () => {

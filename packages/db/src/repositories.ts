@@ -6,8 +6,8 @@ import { and, eq, inArray, sql } from 'drizzle-orm';
 import type { NormalizedOffer } from '@madplan/domain';
 import type { FridaFood } from '@madplan/adapters';
 import { listSources, type SourceId } from '@madplan/legal';
-import type { Db } from './client.js';
-import * as s from './schema/index.js';
+import type { Db } from './client';
+import * as s from './schema/index';
 
 export interface UpsertOffersResult {
   inserted: number;

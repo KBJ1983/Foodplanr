@@ -1,11 +1,11 @@
 import { normalizeQuantity, parseQuantityFromHeading, type NormalizedOffer } from '@madplan/domain';
-import { readJsonFixture } from '../fixtures.js';
-import type { AdapterContext, OfferAdapter, WhitelistedRecord } from '../types.js';
+import { readJsonFixture } from '../fixtures';
+import type { AdapterContext, OfferAdapter, WhitelistedRecord } from '../types';
 import {
   SallingFoodWasteStoreSchema,
   type SallingFoodWasteStore,
   type SallingWhitelistedRecord,
-} from './types.js';
+} from './types';
 
 export interface SallingClient {
   foodWasteByZip(zip: string): Promise<SallingFoodWasteStore[]>;

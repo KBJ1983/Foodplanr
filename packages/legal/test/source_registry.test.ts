@@ -6,7 +6,7 @@ import {
   attributionsFor,
   getSource,
   FRIDA_ATTRIBUTION,
-} from '../src/index.js';
+} from '../src/index';
 
 describe('source registry', () => {
   it('contains every declared source id exactly once', () => {

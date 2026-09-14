@@ -1,7 +1,7 @@
 import { boolean, date, integer, jsonb, numeric, pgTable, primaryKey, text, timestamp, uuid } from 'drizzle-orm/pg-core';
-import { mealPlanStatusEnum } from './enums.js';
-import { retailer } from './retail.js';
-import { appUser } from './users.js';
+import { mealPlanStatusEnum } from './enums';
+import { retailer } from './retail';
+import { appUser } from './users';
 
 /** Predefined meal plans — ours. `week_pattern` = [{day, recipe_id, servings}]. */
 export const mealPlanTemplate = pgTable('meal_plan_template', {

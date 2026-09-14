@@ -19,7 +19,7 @@ Details: brief §0 and [docs/legal/](docs/legal/README.md).
 
 ```
 apps/ingest        CLI + worker: runs adapters behind the gate, normalises, persists
-apps/web           (phase 1) Next.js PWA + /admin
+apps/web           Next.js 16 customer PWA — design "Plakat" (1c) from the design handoff; example data until the engine lands
 packages/legal     source_registry.ts + gate (assertSourceAllowed, whitelistRecord)
 packages/domain    pure TS: units, quantity → unit price (pass 1), bundle split, offer types
 packages/adapters  tjek/ salling/ frida/ — each with fixtures/; runner.ts is the only entry point
@@ -48,6 +48,17 @@ pnpm ingest --source=tjek --fixtures        # persists fixture offers (dev only;
 ```
 
 `pnpm ingest --source=tjek --live` exits with code 2 today: Tjek is `pending`.
+
+## Customer app (apps/web)
+
+```bash
+pnpm dev:web            # http://localhost:3000 (pass --port if 3000 is taken: pnpm --filter @madplan/web dev --port 3100)
+pnpm typecheck:web
+```
+
+Screens: onboarding (5 full-colour questions) → Arkiv → Plan (week) → Indkøb/strategi → Indkøbsliste → Profil.
+Strategy computation (Billigst / Færrest steder / Faste butikker) is real and tested; plans, dishes and
+prices are our own example data (`apps/web/lib/mock-data.ts`). See [apps/web/README.md](apps/web/README.md).
 
 ## Ingest pipeline (pass 1 implemented)
 

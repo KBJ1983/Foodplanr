@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GLOBALLY_FORBIDDEN_FIELDS, getSource } from '@madplan/legal';
-import { FixtureTjekClient, TjekAdapter, normalizeTjekRecord, runOfferIngest } from '../src/index.js';
+import { FixtureTjekClient, TjekAdapter, normalizeTjekRecord, runOfferIngest } from '../src/index';
 
 describe('Tjek adapter (fixtures)', () => {
   it('fetches all fixture offers across dealers and paginates catalogs', async () => {

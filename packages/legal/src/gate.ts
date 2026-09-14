@@ -16,7 +16,7 @@ import {
   getSource,
   type SourceEntry,
   type SourceId,
-} from './source_registry.js';
+} from './source_registry';
 
 export type RunMode = 'live' | 'fixtures';
 

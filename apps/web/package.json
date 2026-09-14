@@ -1,0 +1,25 @@
+{
+  "name": "@madplan/web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Customer PWA (Next.js App Router). Design: 'Plakat' direction 1c from the design handoff.",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@madplan/checkout": "workspace:*",
+    "@madplan/legal": "workspace:*",
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -15,6 +15,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "ingest": "tsx apps/ingest/src/cli.ts",
+    "dev:web": "pnpm --filter @madplan/web dev",
+    "build:web": "pnpm --filter @madplan/web build",
+    "typecheck:web": "pnpm --filter @madplan/web typecheck",
     "db:generate": "pnpm --filter @madplan/db run generate",
     "db:migrate": "pnpm --filter @madplan/db run migrate"
   },

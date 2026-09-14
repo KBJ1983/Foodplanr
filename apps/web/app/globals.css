@@ -1,0 +1,479 @@
+/* Design tokens — "Plakat" (direction 1c) from the design handoff. */
+:root {
+  --a: oklch(58% 0.26 300);
+  --a-dark: oklch(40% 0.2 300);
+  --b: oklch(72% 0.15 200);
+  --c: oklch(88% 0.22 80);
+  --white: #fff;
+  --ink: #0d0d12;
+
+  --bg: var(--white);
+  --fg: var(--ink);
+
+  --r: 8px; /* blocks, chips */
+  --r-cb: 4px; /* checkbox */
+  --r-panel: 24px; /* panel over photo */
+
+  --pad: 18px;
+  --gap: 12px;
+
+  --divider: rgb(0 0 0 / 0.15);
+  --divider-strong: rgb(0 0 0 / 0.3);
+  --chip-muted: rgb(0 0 0 / 0.08);
+  --track: rgb(0 0 0 / 0.12);
+
+  --font: var(--font-manrope), 'Manrope', system-ui, sans-serif;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* Screens with a full-colour background. `data-ink="white"` flips foreground tokens. */
+[data-ink='white'] {
+  --fg: #fff;
+  --divider: rgb(255 255 255 / 0.35);
+  --divider-strong: rgb(255 255 255 / 0.35);
+  --chip-muted: rgb(255 255 255 / 0.18);
+  --track: rgb(255 255 255 / 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Layout ---------------------------------------------------------------- */
+
+.screen {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--fg);
+  display: flex;
+  flex-direction: column;
+}
+
+.pad {
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Main + optional side panel. Column on mobile so `margin-top:auto` pushes CTAs to the bottom; row on desktop. */
+.split {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+.sb {
+  justify-content: space-between;
+}
+.ac {
+  align-items: center;
+}
+.ae {
+  align-items: flex-end;
+}
+.mt-auto {
+  margin-top: auto;
+}
+
+/* Typography ----------------------------------------------------------- */
+
+.logo {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: 14px;
+}
+
+.num {
+  font-size: 64px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.num small {
+  font-size: 0.36em;
+  letter-spacing: 0;
+  font-weight: 800;
+}
+.num .dim {
+  opacity: 0.5;
+}
+
+.h1 {
+  font-size: 26px;
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: pretty;
+}
+.h2 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+}
+.p {
+  font-size: 13px;
+  opacity: 0.8;
+  margin: 0;
+  line-height: 1.4;
+}
+.s {
+  font-size: 12px;
+  opacity: 0.65;
+}
+.mono {
+  font: 10px var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 0;
+}
+
+/* Word navigation ------------------------------------------------------ */
+
+.nav {
+  display: flex;
+  gap: 14px;
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+}
+.nav a {
+  opacity: 0.5;
+  padding-bottom: 2px;
+  border-bottom: 3px solid transparent;
+}
+.nav a[aria-current='page'] {
+  opacity: 1;
+  border-bottom-color: currentColor;
+}
+
+/* Components ----------------------------------------------------------- */
+
+.chip {
+  border-radius: var(--r);
+  padding: 6px 11px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--chip-muted);
+  color: var(--fg);
+  line-height: 1.3;
+}
+.chip[aria-pressed='true'],
+.chip.on {
+  background: var(--fg);
+  color: var(--bg);
+}
+.chip.outline {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--fg);
+}
+
+.btn {
+  border-radius: var(--r);
+  background: var(--fg);
+  color: var(--bg);
+  padding: 14px 20px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn.accent {
+  background: var(--a);
+  color: #fff;
+}
+.btn.inverse {
+  background: #fff;
+  color: var(--a-dark);
+}
+.btn2 {
+  border-radius: var(--r);
+  box-shadow: inset 0 0 0 2px var(--fg);
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn:disabled,
+.btn2:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--divider);
+  font-size: 13px;
+  width: 100%;
+  text-align: left;
+}
+.li.strong {
+  border-color: var(--divider-strong);
+  padding: 12px 0;
+}
+.li.last {
+  border-bottom: 0;
+}
+
+.cb {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--fg);
+  border-radius: var(--r-cb);
+  flex: none;
+  display: inline-block;
+}
+.cb.x {
+  background: var(--fg);
+}
+
+.blk {
+  border-radius: var(--r);
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.blk.a {
+  background: var(--a);
+  color: #fff;
+}
+.blk.b {
+  background: var(--b);
+  color: var(--ink);
+}
+.blk.c {
+  background: var(--c);
+  color: var(--ink);
+}
+
+/* Placeholder for photos/maps — striped, never third-party imagery. */
+.img {
+  background:
+    repeating-linear-gradient(135deg, rgb(0 0 0 / 0.08) 0 6px, transparent 6px 14px),
+    var(--img-bg, rgb(255 255 255 / 0.5));
+  border-radius: var(--r);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 10px var(--mono);
+  color: var(--ink);
+  opacity: 0.9;
+}
+
+.bar {
+  height: 12px;
+  border-radius: 99px;
+  background: var(--track);
+  overflow: hidden;
+  position: relative;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  background: var(--fg);
+}
+
+/* Range slider styled as the design's bar */
+input[type='range'].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  border-radius: 99px;
+  background: linear-gradient(
+    to right,
+    var(--fg) 0 var(--pct, 50%),
+    var(--track) var(--pct, 50%) 100%
+  );
+  outline: none;
+  margin: 0;
+}
+input[type='range'].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--fg);
+  border: 4px solid var(--bg);
+  cursor: pointer;
+}
+input[type='range'].slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--fg);
+  border: 4px solid var(--bg);
+  cursor: pointer;
+}
+
+.toggle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--fg);
+  border-radius: var(--r-cb);
+  flex: none;
+}
+.toggle[aria-checked='true'] {
+  background: var(--fg);
+}
+
+.counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 800;
+  font-size: 18px;
+}
+.counter button {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r);
+  box-shadow: inset 0 0 0 2px var(--fg);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Desktop --------------------------------------------------------------- */
+
+.desk-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --pad: 40px;
+    --gap: 16px;
+  }
+  .desk-only {
+    display: flex;
+  }
+  .mob-only {
+    display: none !important;
+  }
+  .nav {
+    gap: 22px;
+    font-size: 15px;
+  }
+  .logo {
+    font-size: 16px;
+  }
+  .num {
+    font-size: 96px;
+  }
+  .h1 {
+    font-size: 36px;
+  }
+  .p {
+    font-size: 15px;
+  }
+  .li {
+    font-size: 14px;
+  }
+  .chip {
+    font-size: 12px;
+    padding: 7px 13px;
+  }
+
+  /* Two-column desktop layouts: main + colored side panel */
+  .split {
+    flex-direction: row;
+    min-height: 100dvh;
+  }
+  .split > .main {
+    flex: 1.4;
+    padding: 36px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+  .split > .panel {
+    width: 380px;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

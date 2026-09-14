@@ -1,16 +1,16 @@
-export * from './types.js';
-export * from './runner.js';
-export * from './fixtures.js';
-export { TjekAdapter, toWhitelisted as tjekToWhitelisted, normalizeTjekRecord } from './tjek/adapter.js';
-export { FixtureTjekClient, LiveTjekClient, TjekRateLimitError, type TjekClient } from './tjek/client.js';
-export type { TjekOffer, TjekWhitelistedRecord } from './tjek/types.js';
+export * from './types';
+export * from './runner';
+export * from './fixtures';
+export { TjekAdapter, toWhitelisted as tjekToWhitelisted, normalizeTjekRecord } from './tjek/adapter';
+export { FixtureTjekClient, LiveTjekClient, TjekRateLimitError, type TjekClient } from './tjek/client';
+export type { TjekOffer, TjekWhitelistedRecord } from './tjek/types';
 export {
   SallingAdapter,
   FixtureSallingClient,
   LiveSallingClient,
   normalizeSallingRecord,
   type SallingClient,
-} from './salling/adapter.js';
-export type { SallingWhitelistedRecord } from './salling/types.js';
-export * from './frida/import.js';
-export { parseCsv, detectDelimiter } from './frida/csv.js';
+} from './salling/adapter';
+export type { SallingWhitelistedRecord } from './salling/types';
+export * from './frida/import';
+export { parseCsv, detectDelimiter } from './frida/csv';

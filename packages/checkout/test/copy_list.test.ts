@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CopyListHandoff, formatCopyList } from '../src/index.js';
+import { CopyListHandoff, formatCopyList } from '../src/index';
 
 describe('copy_list handoff', () => {
   const list = {

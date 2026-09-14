@@ -11,8 +11,8 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
-import { checkoutModeEnum, normalizedByEnum, offerKindEnum, unitPriceKindEnum } from './enums.js';
-import { ingredient } from './ingredients.js';
+import { checkoutModeEnum, normalizedByEnum, offerKindEnum, unitPriceKindEnum } from './enums';
+import { ingredient } from './ingredients';
 
 export const retailer = pgTable('retailer', {
   id: uuid('id').primaryKey().defaultRandom(),

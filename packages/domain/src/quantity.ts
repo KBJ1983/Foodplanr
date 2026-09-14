@@ -6,8 +6,8 @@
  * Unit price is DKK per kg or per litre when a size is known, DKK per piece
  * when only a piece count is known, otherwise null.
  */
-import type { NormalizedQuantity, RawQuantity, SizeUnit } from './types.js';
-import { round4, toBaseAmount } from './units.js';
+import type { NormalizedQuantity, RawQuantity, SizeUnit } from './types';
+import { round4, toBaseAmount } from './units';
 
 const NUMBER = String.raw`(\d+(?:[.,]\d+)?)`;
 const UNIT = String.raw`(kg|g|gr|mg|ml|cl|dl|l|ltr|stk|pcs|pk)`;

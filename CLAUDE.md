@@ -29,4 +29,11 @@ Language: code and comments in English; Danish domain words (madplan, tilbud, r�
   function `(preferences, recipePool, offerIndex, priceBaseline) → MealPlan[]`.
 - Ingredients are ids from our ontology (Frida-seeded), never free text, in recipes and matches.
 - Schema changes: edit `packages/db/src/schema/*`, then `pnpm db:generate`; commit the generated SQL.
+- Imports inside workspace packages are extensionless (`./gate`, not `./gate.js`) with
+  `moduleResolution: Bundler`. Turbopack (Next.js) cannot map `.js` specifiers to `.ts` files; tsx and
+  vitest are fine either way. Don't reintroduce `.js` suffixes.
+- Web app (`apps/web`): design tokens and utility classes live in `app/globals.css`; every screen is a
+  full-colour `<Screen tone>`; no photos or maps from third parties, only our own assets/placeholders.
+- Editing files from PowerShell: read with `[IO.File]::ReadAllText(path, UTF8)` and write with a
+  BOM-less UTF-8 encoder. `Get-Content -Raw` in Windows PowerShell 5.1 reads as ANSI and corrupts æøå.
 - Money: `numeric` columns, `DKK`. Quantities normalised to g / ml / pcs.

@@ -1,6 +1,6 @@
-import { readJsonFixture } from '../fixtures.js';
-import { TjekCatalogSchema, TjekDealerSchema, TjekOfferSchema } from './types.js';
-import type { TjekCatalog, TjekDealer, TjekOffer } from './types.js';
+import { readJsonFixture } from '../fixtures';
+import { TjekCatalogSchema, TjekDealerSchema, TjekOfferSchema } from './types';
+import type { TjekCatalog, TjekDealer, TjekOffer } from './types';
 
 export interface TjekClient {
   listDealers(): Promise<TjekDealer[]>;

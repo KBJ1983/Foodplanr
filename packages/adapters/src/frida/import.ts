@@ -10,7 +10,7 @@
  * Attribution is mandatory wherever these numbers are shown:
  *   "Fødevaredata (frida.fooddata.dk), version 5.5, 2025, DTU Fødevareinstituttet"
  */
-import { parseCsv } from './csv.js';
+import { parseCsv } from './csv';
 
 export interface FridaColumnMap {
   foodId: readonly string[];

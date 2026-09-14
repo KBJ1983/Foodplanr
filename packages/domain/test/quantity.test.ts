@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeQuantity, parseQuantityFromHeading } from '../src/index.js';
+import { normalizeQuantity, parseQuantityFromHeading } from '../src/index';
 
 describe('normalizeQuantity — pass 1', () => {
   it('exact weight → DKK per kg', () => {
