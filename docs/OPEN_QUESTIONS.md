@@ -4,7 +4,7 @@ Owner in parentheses. Phase 0 build is complete without these; they gate live da
 
 ## Rights (blocking for live data)
 
-- [ ] **Tjek**: send use-case + request for commercial agreement to services@tjek.com (Kasper). Template of what to ask in [legal/tjek.md](legal/tjek.md).
+- [ ] **Tjek**: send the request to services@tjek.com (Kasper, decided 2026-09-14). Draft mail: [legal/tjek-request-draft.md](legal/tjek-request-draft.md). Agreement → live runbook: [legal/tjek.md](legal/tjek.md). Note their terms 8.3 (third-party commercial use), 8.4 (no sharing of access), 8.6 (no AI/ML use without written consent — our LLM matching must be covered explicitly).
 - [ ] **Salling**: read Terms, store in `docs/legal/`, decide approved/pending (Kasper).
 - [ ] **Open Food Facts**: use-or-drop decision on ODbL share-alike (Kasper). Recommendation in [legal/openfoodfacts.md](legal/openfoodfacts.md): drop for MVP.
 - [ ] **Rema 1000** and **Nemlig**: written request for partner integration (Kasper). Until answered: `blocked`.
