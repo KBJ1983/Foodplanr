@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@madplan/legal": ["./packages/legal/src/index.ts"],
+      "@madplan/domain": ["./packages/domain/src/index.ts"],
+      "@madplan/adapters": ["./packages/adapters/src/index.ts"],
+      "@madplan/db": ["./packages/db/src/index.ts"],
+      "@madplan/checkout": ["./packages/checkout/src/index.ts"]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "packages/db/drizzle.config.ts",
+    "apps/*/src/**/*.ts",
+    "vitest.config.ts"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@madplan/checkout",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Checkout handoff interface + implementations. Phase 0: interface and copy_list only.",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

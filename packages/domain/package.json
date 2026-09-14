@@ -1,0 +1,13 @@
+{
+  "name": "@madplan/domain",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Pure domain logic: units, quantity parsing, offer normalisation (pass 1), meal-plan engine types.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@madplan/legal": "workspace:*"
+  }
+}

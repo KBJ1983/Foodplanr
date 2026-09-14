@@ -1,0 +1,17 @@
+{
+  "name": "@madplan/ingest",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Ingest worker + CLI: runs adapters behind the legal gate, normalises, persists.",
+  "scripts": {
+    "cli": "tsx src/cli.ts"
+  },
+  "dependencies": {
+    "@madplan/adapters": "workspace:*",
+    "@madplan/db": "workspace:*",
+    "@madplan/domain": "workspace:*",
+    "@madplan/legal": "workspace:*",
+    "commander": "^14.0.0"
+  }
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "store": {
+      "id": "fx-store-8000-1",
+      "brand": "netto",
+      "name": "Netto (fixture) Aarhus C",
+      "address": { "street": "Fixturevej 1", "zip": "8000", "city": "Aarhus C" },
+      "coordinates": [10.2039, 56.1629],
+      "hours": []
+    },
+    "clearances": [
+      {
+        "offer": {
+          "currency": "DKK",
+          "discount": 15.0,
+          "ean": "5700000000011",
+          "endTime": "2026-09-14T21:59:59+0000",
+          "lastUpdate": "2026-09-14T05:30:00+0000",
+          "newPrice": 15.0,
+          "originalPrice": 30.0,
+          "percentDiscount": 50,
+          "startTime": "2026-09-14T05:00:00+0000",
+          "stock": 4,
+          "stockUnit": "each"
+        },
+        "product": {
+          "description": "Kyllingelår 900 g",
+          "ean": "5700000000011",
+          "image": "https://example.invalid/never-stored.jpg"
+        }
+      },
+      {
+        "offer": {
+          "currency": "DKK",
+          "discount": 5.0,
+          "ean": "5700000000028",
+          "endTime": "2026-09-14T21:59:59+0000",
+          "lastUpdate": "2026-09-14T05:30:00+0000",
+          "newPrice": 5.0,
+          "originalPrice": 10.0,
+          "percentDiscount": 50,
+          "startTime": "2026-09-14T05:00:00+0000",
+          "stock": 2.5,
+          "stockUnit": "kg"
+        },
+        "product": {
+          "description": "Bananer",
+          "ean": "5700000000028",
+          "image": "https://example.invalid/never-stored.jpg"
+        }
+      }
+    ]
+  }
+]

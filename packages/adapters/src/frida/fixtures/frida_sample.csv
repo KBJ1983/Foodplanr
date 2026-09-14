@@ -1,0 +1,32 @@
+FoodID;FødevareNavn;FoodName_EN;FoodGroup;ParameterID;ParameterNavn;ResVal;Unit
+1;Æble, rå;Apple, raw;Frugt og frugtprodukter;1;Energi (kJ);218;kJ
+1;Æble, rå;Apple, raw;Frugt og frugtprodukter;2;Energi (kcal);52;kcal
+1;Æble, rå;Apple, raw;Frugt og frugtprodukter;3;Protein;0,3;g
+1;Æble, rå;Apple, raw;Frugt og frugtprodukter;4;Fedt;0,2;g
+1;Æble, rå;Apple, raw;Frugt og frugtprodukter;5;Kulhydrat, tilgængelig;11,4;g
+1;Æble, rå;Apple, raw;Frugt og frugtprodukter;6;Kostfibre;2,2;g
+1;Æble, rå;Apple, raw;Frugt og frugtprodukter;7;Vitamin C;4,6;mg
+2;Oksekød, hakket, 8-12 % fedt, rå;Beef, minced, 8-12 % fat, raw;Kød og kødprodukter;1;Energi (kJ);710;kJ
+2;Oksekød, hakket, 8-12 % fedt, rå;Beef, minced, 8-12 % fat, raw;Kød og kødprodukter;2;Energi (kcal);170;kcal
+2;Oksekød, hakket, 8-12 % fedt, rå;Beef, minced, 8-12 % fat, raw;Kød og kødprodukter;3;Protein;20,1;g
+2;Oksekød, hakket, 8-12 % fedt, rå;Beef, minced, 8-12 % fat, raw;Kød og kødprodukter;4;Fedt;10,0;g
+2;Oksekød, hakket, 8-12 % fedt, rå;Beef, minced, 8-12 % fat, raw;Kød og kødprodukter;5;Kulhydrat, tilgængelig;0;g
+2;Oksekød, hakket, 8-12 % fedt, rå;Beef, minced, 8-12 % fat, raw;Kød og kødprodukter;6;Kostfibre;0;g
+3;Kartoffel, rå;Potato, raw;Grøntsager og grøntsagsprodukter;1;Energi (kJ);322;kJ
+3;Kartoffel, rå;Potato, raw;Grøntsager og grøntsagsprodukter;3;Protein;1,9;g
+3;Kartoffel, rå;Potato, raw;Grøntsager og grøntsagsprodukter;4;Fedt;0,1;g
+3;Kartoffel, rå;Potato, raw;Grøntsager og grøntsagsprodukter;5;Kulhydrat, tilgængelig;16,8;g
+3;Kartoffel, rå;Potato, raw;Grøntsager og grøntsagsprodukter;6;Kostfibre;1,4;g
+4;"Mælk, sød, 3,5 % fedt";"Milk, whole, 3.5 % fat";Mælk og mælkeprodukter;1;Energi (kJ);268;kJ
+4;"Mælk, sød, 3,5 % fedt";"Milk, whole, 3.5 % fat";Mælk og mælkeprodukter;2;Energi (kcal);64;kcal
+4;"Mælk, sød, 3,5 % fedt";"Milk, whole, 3.5 % fat";Mælk og mælkeprodukter;3;Protein;3,4;g
+4;"Mælk, sød, 3,5 % fedt";"Milk, whole, 3.5 % fat";Mælk og mælkeprodukter;4;Fedt;3,5;g
+4;"Mælk, sød, 3,5 % fedt";"Milk, whole, 3.5 % fat";Mælk og mælkeprodukter;5;Kulhydrat, tilgængelig;4,7;g
+4;"Mælk, sød, 3,5 % fedt";"Milk, whole, 3.5 % fat";Mælk og mælkeprodukter;6;Kostfibre;0;g
+5;Kyllingebryst, uden skind, rå;Chicken breast, skinless, raw;Kød og kødprodukter;1;Energi (kJ);452;kJ
+5;Kyllingebryst, uden skind, rå;Chicken breast, skinless, raw;Kød og kødprodukter;2;Energi (kcal);108;kcal
+5;Kyllingebryst, uden skind, rå;Chicken breast, skinless, raw;Kød og kødprodukter;3;Protein;22,5;g
+5;Kyllingebryst, uden skind, rå;Chicken breast, skinless, raw;Kød og kødprodukter;4;Fedt;1,7;g
+5;Kyllingebryst, uden skind, rå;Chicken breast, skinless, raw;Kød og kødprodukter;5;Kulhydrat, tilgængelig;0;g
+5;Kyllingebryst, uden skind, rå;Chicken breast, skinless, raw;Kød og kødprodukter;6;Kostfibre;0;g
+;;;;;;;

@@ -1,0 +1,196 @@
+[
+  {
+    "id": "fx-o-001",
+    "ern": "ern:offer:fx-o-001",
+    "heading": "Hakket oksekød 8-12%",
+    "description": "FIXTURE — editorial text that must never be stored",
+    "catalog_page": 1,
+    "pricing": { "price": 39.95, "pre_price": 54.95, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "g", "si": { "symbol": "g", "factor": 1 } },
+      "size": { "from": 500, "to": 500 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "images": { "view": "https://example.invalid/o1.jpg", "zoom": "https://example.invalid/o1z.jpg" },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "publish": "2026-09-12T10:00:00+0000",
+    "dealer_id": "fx-netto",
+    "catalog_id": "fx-cat-netto-38",
+    "store_id": null,
+    "branding": { "name": "Netto", "color": "ffd800" }
+  },
+  {
+    "id": "fx-o-002",
+    "heading": "Kyllingebrystfilet",
+    "description": "FIXTURE",
+    "pricing": { "price": 45.0, "pre_price": null, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "g", "si": { "symbol": "g", "factor": 1 } },
+      "size": { "from": 400, "to": 500 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "images": { "view": "https://example.invalid/o2.jpg" },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-netto",
+    "catalog_id": "fx-cat-netto-38"
+  },
+  {
+    "id": "fx-o-003",
+    "heading": "Skyr naturel",
+    "description": "FIXTURE",
+    "pricing": { "price": 25.0, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "g", "si": { "symbol": "g", "factor": 1 } },
+      "size": { "from": 450, "to": 450 },
+      "pieces": { "from": 2, "to": 2 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-netto",
+    "catalog_id": "fx-cat-netto-38"
+  },
+  {
+    "id": "fx-o-004",
+    "heading": "Sødmælk eller letmælk",
+    "description": "FIXTURE bundle",
+    "pricing": { "price": 12.0, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "l", "si": { "symbol": "ml", "factor": 1000 } },
+      "size": { "from": 1, "to": 1 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-netto",
+    "catalog_id": "fx-cat-netto-38"
+  },
+  {
+    "id": "fx-o-005",
+    "heading": "Agurk",
+    "description": "FIXTURE",
+    "pricing": { "price": 8.0, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "pcs", "si": { "symbol": "pcs", "factor": 1 } },
+      "size": { "from": 1, "to": 1 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-netto",
+    "catalog_id": "fx-cat-netto-38"
+  },
+  {
+    "id": "fx-o-006",
+    "heading": "Æg str. M/L 10 stk",
+    "description": "FIXTURE",
+    "pricing": { "price": 24.95, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "pcs", "si": { "symbol": "pcs", "factor": 1 } },
+      "size": { "from": 1, "to": 1 },
+      "pieces": { "from": 10, "to": 10 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-netto",
+    "catalog_id": "fx-cat-netto-38"
+  },
+  {
+    "id": "fx-o-101",
+    "heading": "Kartofler 2 kg",
+    "description": "FIXTURE — quantity missing, must be parsed from heading",
+    "pricing": { "price": 15.0, "currency": "DKK" },
+    "quantity": null,
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-rema",
+    "catalog_id": "fx-cat-rema-38"
+  },
+  {
+    "id": "fx-o-102",
+    "heading": "Pasta, ris eller couscous",
+    "description": "FIXTURE 3-way bundle",
+    "pricing": { "price": 10.0, "pre_price": 14.95, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "g", "si": { "symbol": "g", "factor": 1 } },
+      "size": { "from": 500, "to": 1000 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-rema",
+    "catalog_id": "fx-cat-rema-38"
+  },
+  {
+    "id": "fx-o-103",
+    "heading": "Laksefilet",
+    "description": "FIXTURE",
+    "pricing": { "price": 59.0, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "kg", "si": { "symbol": "g", "factor": 1000 } },
+      "size": { "from": 0.3, "to": 0.3 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-rema",
+    "catalog_id": "fx-cat-rema-38"
+  },
+  {
+    "id": "fx-o-104",
+    "heading": "Gulerødder",
+    "description": "FIXTURE — no quantity anywhere",
+    "pricing": { "price": 10.0, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "pcs", "si": { "symbol": "pcs", "factor": 1 } },
+      "size": { "from": 1, "to": 1 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-rema",
+    "catalog_id": "fx-cat-rema-38"
+  },
+  {
+    "id": "fx-o-201",
+    "heading": "Havregryn",
+    "description": "FIXTURE",
+    "pricing": { "price": 9.0, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "kg", "si": { "symbol": "g", "factor": 1000 } },
+      "size": { "from": 1, "to": 1 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-lidl",
+    "catalog_id": "fx-cat-lidl-38"
+  },
+  {
+    "id": "fx-o-202",
+    "heading": "Cola 6 x 33 cl",
+    "description": "FIXTURE — multipack in heading only",
+    "pricing": { "price": 22.0, "currency": "DKK" },
+    "quantity": null,
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-lidl",
+    "catalog_id": "fx-cat-lidl-38"
+  },
+  {
+    "id": "fx-o-203",
+    "heading": "Tomater i klase",
+    "description": "FIXTURE",
+    "pricing": { "price": 15.0, "currency": "DKK" },
+    "quantity": {
+      "unit": { "symbol": "g", "si": { "symbol": "g", "factor": 1 } },
+      "size": { "from": 500, "to": 500 },
+      "pieces": { "from": 1, "to": 1 }
+    },
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "dealer_id": "fx-lidl",
+    "catalog_id": "fx-cat-lidl-38"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "name": "@madplan/legal",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Source rights registry and adapter gate. Single source of truth for what data we may use.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "zod": "^4.1.0"
+  }
+}

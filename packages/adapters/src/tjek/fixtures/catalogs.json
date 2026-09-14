@@ -1,0 +1,28 @@
+[
+  {
+    "id": "fx-cat-netto-38",
+    "dealer_id": "fx-netto",
+    "label": "Uge 38",
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "offer_count": 6,
+    "page_count": 24,
+    "images": { "view": "https://example.invalid/page.jpg" }
+  },
+  {
+    "id": "fx-cat-rema-38",
+    "dealer_id": "fx-rema",
+    "label": "Uge 38",
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "offer_count": 4
+  },
+  {
+    "id": "fx-cat-lidl-38",
+    "dealer_id": "fx-lidl",
+    "label": "Uge 38",
+    "run_from": "2026-09-13T22:00:00+0000",
+    "run_till": "2026-09-19T21:59:59+0000",
+    "offer_count": 3
+  }
+]

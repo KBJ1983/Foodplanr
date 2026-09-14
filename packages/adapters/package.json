@@ -1,0 +1,15 @@
+{
+  "name": "@madplan/adapters",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "One adapter per external source. Each returns whitelisted, normalised records only — never raw payloads.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@madplan/domain": "workspace:*",
+    "@madplan/legal": "workspace:*",
+    "zod": "^4.1.0"
+  }
+}

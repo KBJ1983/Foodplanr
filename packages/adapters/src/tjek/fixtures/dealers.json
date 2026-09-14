@@ -1,0 +1,5 @@
+[
+  { "id": "fx-netto", "name": "Netto (fixture)", "website": "https://example.invalid", "logo": "https://example.invalid/logo.png" },
+  { "id": "fx-rema", "name": "Rema 1000 (fixture)", "website": "https://example.invalid" },
+  { "id": "fx-lidl", "name": "Lidl (fixture)", "website": "https://example.invalid" }
+]

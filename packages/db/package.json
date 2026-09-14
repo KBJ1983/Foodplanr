@@ -1,0 +1,26 @@
+{
+  "name": "@madplan/db",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Drizzle schema, migrations and repositories (Postgres).",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts"
+  },
+  "scripts": {
+    "generate": "drizzle-kit generate",
+    "migrate": "tsx src/migrate.ts",
+    "studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@madplan/adapters": "workspace:*",
+    "@madplan/domain": "workspace:*",
+    "@madplan/legal": "workspace:*",
+    "drizzle-orm": "^0.44.5",
+    "postgres": "^3.4.7"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.4"
+  }
+}
